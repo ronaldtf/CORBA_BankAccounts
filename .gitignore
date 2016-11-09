@@ -3,3 +3,6 @@
 !.gitignore
 */Debug
 *.class
+idl/Account.hh
+idl/AccountSK.cc
+idl/corbaAccount

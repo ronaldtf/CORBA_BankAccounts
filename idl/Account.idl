@@ -1,0 +1,39 @@
+module corbaAccount {	
+	interface date {
+		attribute long day;
+		attribute long month;
+		attribute long year;
+		
+		string toString();
+	};
+	
+	enum operationType {ADD, WITHDRAW};
+	
+	interface Operation {
+		attribute operationType type;
+		attribute float amount;
+		void create(in operationType opType, in float opAmount);
+		operationType getType();
+		float getAmount();
+	};
+
+	typedef sequence<Operation> accountOperationsType;
+
+	interface Account {
+		attribute long accountId;
+		attribute string name;
+		attribute string surname;
+		attribute date dateAccountCreated;
+		attribute float balance;
+		attribute accountOperationsType accountOperations;
+		
+		void createAccount(in string name, in string surname);
+		float getBalance();
+		date getDateAccountCreated();
+		string getNameDetails();
+		long getAccountId();
+		void addOperation(in Operation op);
+		accountOperationsType getOperations();
+		string toString();
+	};
+};
