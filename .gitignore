@@ -3,8 +3,3 @@
 !.gitignore
 */Debug
 *.class
-Clock.hh
-ClockSK.cc
-IDL/test/
-*/client/Client
-*/server/Server
