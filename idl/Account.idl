@@ -12,9 +12,6 @@ module corbaAccount {
 	interface Operation {
 		attribute operationType type;
 		attribute float amount;
-		void create(in operationType opType, in float opAmount);
-		operationType getType();
-		float getAmount();
 	};
 
 	typedef sequence<Operation> accountOperationsType;
@@ -26,14 +23,8 @@ module corbaAccount {
 		attribute date dateAccountCreated;
 		attribute float balance;
 		attribute accountOperationsType accountOperations;
-		
-		void createAccount(in string name, in string surname);
-		float getBalance();
-		date getDateAccountCreated();
-		string getNameDetails();
-		long getAccountId();
+
 		void addOperation(in Operation op);
-		accountOperationsType getOperations();
 		string toString();
 	};
 };

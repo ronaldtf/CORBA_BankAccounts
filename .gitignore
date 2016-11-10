@@ -1,6 +1,7 @@
 .*
 *.o
 !.gitignore
+Debug
 */Debug
 *.class
 idl/Account.hh
