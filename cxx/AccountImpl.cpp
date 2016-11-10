@@ -121,7 +121,7 @@ public:
     	_accountOperations.push_back(OperationImpl(op->type(), op->amount()));
     };
 
-    corbaAccount::accountOperationsType* getOperations() {
+    corbaAccount::accountOperationsType* accountOperations() {
     	corbaAccount::accountOperationsType* ops = new corbaAccount::accountOperationsType;
     	ops->length(_accountOperations.size());
     	unsigned int pos = 0;
@@ -131,6 +131,14 @@ public:
     	}
     	return ops;
     };
+
+    void accountOperations(const ::corbaAccount::accountOperationsType& _v) {
+    	_accountOperations.clear();
+    	size_t len = _v.length();
+    	for (size_t pos=0; pos<len; ++pos) {
+    		_accountOperations.push_back(OperationImpl(_v[pos]->type(), _v[pos]->amount()));
+    	}
+    }
 
     char* toString() {
     	std::ostringstream os;
