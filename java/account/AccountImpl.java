@@ -102,7 +102,7 @@ class OperationImpl extends OperationPOA {
 
 }
 
-public class AccountImpl extends AccountPOA {
+class AccountImpl extends AccountPOA {
 
 	private int _accountId;
 	private String _details;
