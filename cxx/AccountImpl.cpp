@@ -97,9 +97,28 @@ public:
 		_dateAccountCreated = dateImpl(tmp->tm_year, tmp->tm_mon, tmp->tm_mday);
 	}
 
-    float balance() {
-    	return _balance;
-    };
+    ::CORBA::Long accountId() {
+    	return _accountId;
+    }
+
+    void accountId(::CORBA::Long _v) {
+    	_accountId = _v;
+    }
+    char* name() {
+    	throw std::exception("Not implemented");
+    }
+
+    void name(const char* _v) {
+    	throw std::exception("Not implemented");
+    }
+
+    char* surname() {
+    	throw std::exception("Not implemented");
+    }
+
+    void surname(const char* _v) {
+    	throw std::exception("Not implemented");
+    }
 
     corbaAccount::date_ptr dateAccountCreated() {
     	corbaAccount::date_ptr d = corbaAccount::date_ptr();
@@ -109,17 +128,18 @@ public:
     	return d;
     }
 
-    char* details() {
-    	return const_cast<char*>(_details.c_str());
-    };
+    void dateAccountCreated(::corbaAccount::date_ptr _v) {
+    	_dateAccountCreated(_v->year(), _v->month(), _v->day());
+    }
 
-    ::CORBA::Long accountId() {
-    	return _accountId;
-    };
 
-    void addOperation(::corbaAccount::Operation_ptr op) {
-    	_accountOperations.push_back(OperationImpl(op->type(), op->amount()));
-    };
+    ::CORBA::Float balance() {
+    	return _balance;
+    }
+
+    void balance(::CORBA::Float _v) {
+    	_balance = _v;
+    }
 
     corbaAccount::accountOperationsType* accountOperations() {
     	corbaAccount::accountOperationsType* ops = new corbaAccount::accountOperationsType;
@@ -139,6 +159,14 @@ public:
     		_accountOperations.push_back(OperationImpl(_v[pos]->type(), _v[pos]->amount()));
     	}
     }
+
+    char* details() {
+    	return const_cast<char*>(_details.c_str());
+    };
+
+    void addOperation(::corbaAccount::Operation_ptr op) {
+    	_accountOperations.push_back(OperationImpl(op->type(), op->amount()));
+    };
 
     char* toString() {
     	std::ostringstream os;

@@ -24,6 +24,7 @@ module corbaAccount {
 		attribute float balance;
 		attribute accountOperationsType accountOperations;
 
+		string details();
 		void addOperation(in Operation op);
 		string toString();
 	};

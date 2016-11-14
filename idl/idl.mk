@@ -5,6 +5,6 @@ idl:
 cxx:
 	g++ -c AccountSK.cc
 java:
-	javac -cp .:corbaAccount *.java
+	cd corbaAccount && javac -cp . *.java
 clean:
 	rm -rf Account.hh AccountSK.cc corbaAccount *.o 
