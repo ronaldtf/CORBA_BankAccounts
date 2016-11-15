@@ -51,4 +51,8 @@ public class AccountDelegate {
 		instance.addOperation(new OperationImpl(Utils.convertType(op.getType()), op.getAmount())._this());
 	}
 	
+	public AccountImpl getCorbaInstance() {
+		return instance;
+	}
+	
 }

@@ -16,4 +16,8 @@ public class OperationDelegate {
 	public OperationType getType() {
 		return Utils.convertType(instance.type());
 	}
+	
+	public OperationImpl getCorbaInstance() {
+		return instance;
+	}
 }

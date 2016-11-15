@@ -28,4 +28,7 @@ public class DateDelegate {
 		return instance.day();
 	}
 	
+	public dateImpl getCorbaInstance() {
+		return instance;
+	}
 }
