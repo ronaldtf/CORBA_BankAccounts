@@ -3,28 +3,33 @@ package account;
 import java.util.Vector;
 
 import corbaAccount.Account;
+import corbaAccount.AccountList;
 
 public class AccountListDelegate {
 
-	private AccountListImpl _accounts;
+	private AccountListImpl _instance;
 
 	public AccountListDelegate() {
-		_accounts = new AccountListImpl();
+		_instance = new AccountListImpl();
+	}
+
+	public AccountListDelegate(AccountList al) {
+		_instance = new AccountListImpl(al);
 	}
 	
 	public void addAccount(AccountDelegate account) {
-		_accounts.addAccount(account.getCorbaInstance()._this());
+		_instance.addAccount(account.getCorbaInstance()._this());
 	}
 	
 	public Vector<AccountDelegate> getAccounts() {
-		Vector<AccountDelegate> acDelegate = new Vector<AccountDelegate>(_accounts.accountsList().length);
-		for (Account a : _accounts.accountsList()) {
+		Vector<AccountDelegate> acDelegate = new Vector<AccountDelegate>(_instance.accountsList().length);
+		for (Account a : _instance.accountsList()) {
 			acDelegate.add(new AccountDelegate(a.name(), a.surname(), a.balance()));
 		}
 		return acDelegate;
 	}
 	
 	public AccountListImpl getCorbaInstance() {
-		return _accounts;
+		return _instance;
 	}
 }

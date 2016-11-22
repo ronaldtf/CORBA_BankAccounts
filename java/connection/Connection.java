@@ -1,4 +1,4 @@
-package account;
+package connection;
 
 import java.nio.channels.AlreadyBoundException;
 import java.util.Properties;
@@ -7,6 +7,7 @@ import org.omg.CORBA.COMM_FAILURE;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Object;
 import org.omg.CORBA.SystemException;
+import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
@@ -21,35 +22,36 @@ import org.omg.PortableServer.POAPackage.ServantAlreadyActive;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
-public class Connection {
+import account.Utils;
+
+public class Connection implements ConnectionServerInterface, ConnectionClientInterface{
 
 	private ORB orb = null;
-	private static Connection instance = null;
 	private static final String CONF_NAME = "conf/server.cfg";
 	private Properties properties;
 	private POA poa;
 	
-	private Connection() {
+	public Connection() throws Exception {
+		init();
 	}
 	
-	public static Connection getInstance() throws Exception {
-		if (instance == null) {
-			instance = new Connection();
-			init();
-		}
-		return instance;
-	}
-	
-	private static void init() throws Exception {
-		instance.properties = Utils.readProperties(CONF_NAME);
+	private void init() throws Exception {
+		properties = Utils.readProperties(CONF_NAME);
 		String args[] = { "-ORBInitRef", "NameService=corbaname::" + 
-				instance.properties.getProperty("org.omg.CORBA.ORBInitialHost") + ":" + 
-				instance.properties.getProperty("org.omg.CORBA.ORBInitialPort")};
-		System.out.println("ARGS: " + args[0] + " " + args[1]);
-		instance.orb = ORB.init(args, instance.properties);
+				properties.getProperty("org.omg.CORBA.ORBInitialHost") + ":" + 
+				properties.getProperty("org.omg.CORBA.ORBInitialPort")};
 		
-		Object obj = instance.orb.resolve_initial_references("RootPOA");
-		instance.poa = POAHelper.narrow(obj);
+		System.out.println("****************** PROPERTIES *******************");
+		for (java.lang.Object p : properties.keySet())
+			System.out.println("* " + p.toString() + " : " + properties.getProperty(p.toString()));
+		System.out.println("*************************************************");
+		System.out.println("ARGS: " + args[0] + " " + args[1]);
+		System.out.println("*************************************************");
+		orb = ORB.init(args, properties);
+	}
+	
+	public void referenceObject() throws InvalidName {
+		poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 	}
 	
 	public void bindObjectToName(Object objRef, String componentName, String contextName, String objectType) throws Exception {
@@ -95,15 +97,30 @@ public class Connection {
 	}	
 	
 	
-	public Object activate(Servant obj) throws ServantAlreadyActive, WrongPolicy, ServantNotActive {
+	public Object activateServant(Servant obj) throws ServantAlreadyActive, WrongPolicy, ServantNotActive {
 		poa.activate_object(obj);
 		return poa.servant_to_reference(obj);
 	}
 	
-	public void run() throws AdapterInactive {
+	public void runServer() throws AdapterInactive {
 		POAManager pman = poa.the_POAManager();
 		pman.activate();
 
 		orb.run();
+	}
+	
+	public Object getClientObject(String componentName, String contextName, String objectType) throws Exception {
+	      Object objRef = orb.resolve_initial_references("NameService");
+	      NamingContext namingContext = NamingContextHelper.narrow(objRef);
+	      NameComponent name[] = new NameComponent[] {
+	    		  new NameComponent(componentName, contextName),
+	    		  new NameComponent(objectType, "Object")
+	      };
+
+	      Object object = namingContext.resolve(name);
+	      if (object == null) {
+	    	  throw new Exception("clock reference is null");
+	      }
+	      return object;
 	}
 }

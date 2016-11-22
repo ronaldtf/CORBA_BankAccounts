@@ -3,26 +3,25 @@ package server;
 import org.omg.CORBA.Object;
 
 import account.AccountListDelegate;
-import account.Connection;
+import connection.Connection;
+import connection.ConnectionServerInterface;
 
 public class Server {
 
 	public static void main(String[] args) {
 		try {
-			Connection connection = Connection.getInstance();
-
+			ConnectionServerInterface connection = new Connection();
+			connection.referenceObject();
+			
 			AccountListDelegate ald = new AccountListDelegate();
-			Object ref = connection.activate(ald.getCorbaInstance());
+			Object ref = connection.activateServant(ald.getCorbaInstance());
 			
 			try {
 				connection.bindObjectToName(ref, "myContext", "accounts", "Object");
-				connection.run();
+				connection.runServer();
 			} catch (Exception e) {
 				System.err.println("Error when binding object: " + e.getLocalizedMessage());
-			}
-
-			connection.run();
-			
+			}			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

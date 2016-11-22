@@ -8,7 +8,7 @@ import corbaAccount.date;
 public class AccountDelegate {
 
 	private AccountImpl instance;
-
+	
 	public AccountDelegate(String name, String surname) {
 		instance = new AccountImpl(name, surname);
 	}
