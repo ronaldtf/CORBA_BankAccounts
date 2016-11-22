@@ -28,4 +28,10 @@ module corbaAccount {
 		void addOperation(in Operation op);
 		string toString();
 	};
+	
+	typedef sequence<Account> accountListType;
+	interface AccountList {
+		attribute accountListType accountsList;
+		void addAccount(in Account ac);
+	};
 };

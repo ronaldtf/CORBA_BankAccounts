@@ -2,14 +2,14 @@ package account;
 
 public class DateDelegate {
 
-	private dateImpl instance;
+	private DateImpl instance;
 	
 	public DateDelegate() {
-		instance = new dateImpl();
+		instance = new DateImpl();
 	}
 	
 	public DateDelegate(int year, int month, int day) {
-		instance = new dateImpl(year,  month,  day);
+		instance = new DateImpl(year,  month,  day);
 	}
 	
 	public String toString() {
@@ -28,7 +28,7 @@ public class DateDelegate {
 		return instance.day();
 	}
 	
-	public dateImpl getCorbaInstance() {
+	public DateImpl getCorbaInstance() {
 		return instance;
 	}
 }

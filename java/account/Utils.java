@@ -44,6 +44,7 @@ public class Utils {
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
 			String line;
+			System.out.println("************* PROPERTIES **************");
 			while ((line = br.readLine()) != null) {
 				Vector<String> tokens = new Vector<String>();
 				StringTokenizer st = new StringTokenizer(line, "=");
@@ -52,8 +53,10 @@ public class Utils {
 				if (tokens.size() < 2)
 					throw new Exception("Invalid configuration file: it must contain lines of type \"key = value\"");
 				properties.put(tokens.elementAt(0), tokens.elementAt(1));
+				System.out.println(" * " + tokens.elementAt(0) + " : " + tokens.elementAt(1));
 				tokens.clear();
 			}
+			System.out.println("***************************************");
 			br.close();
 			isr.close();
 			fis.close();

@@ -2,108 +2,28 @@ package account;
 
 import java.util.Vector;
 
+import corbaAccount.Account;
 import corbaAccount.AccountPOA;
 import corbaAccount.Operation;
-import corbaAccount.OperationPOA;
 import corbaAccount.date;
-import corbaAccount.datePOA;
-import corbaAccount.operationType;
-
-class dateImpl extends datePOA {
-
-	private int _day;
-	private int _month;
-	private int _year;
-	
-	public dateImpl(int year, int month, int day) {
-		_year = year;
-		_month = month;
-		_day = day;
-	}
-	
-	public dateImpl() {
-		this(0,0,0);
-	}
-	
-	@Override
-	public int day() {
-		return _day;
-	}
-
-	@Override
-	public void day(int newDay) {
-		_day = newDay;
-	}
-
-	@Override
-	public int month() {
-		return _month;
-	}
-
-	@Override
-	public void month(int newMonth) {
-		_month = newMonth;
-	}
-
-	@Override
-	public int year() {
-		return _year;
-	}
-
-	@Override
-	public void year(int newYear) {
-		_year = newYear;
-	}
-
-	@Override
-	public String _toString() {
-		return String.valueOf(_year) + "/" + 
-				String.format("%2s",Integer.valueOf(_month)).replaceAll(" " , "0") + 
-				String.format("%2s",Integer.valueOf(_day)).replaceAll(" " , "0");
-	}
-	
-}
-
-class OperationImpl extends OperationPOA {
-
-	private operationType _type;
-	private float _amount;
-	
-	public OperationImpl(operationType type, float amount) {
-		_type = type;
-		_amount = amount;
-	}
-	
-	
-	@Override
-	public operationType type() {
-		return _type;
-	}
-
-	@Override
-	public void type(operationType newType) {
-		_type = newType;
-	}
-
-	@Override
-	public float amount() {
-		return _amount;
-	}
-
-	@Override
-	public void amount(float newAmount) {
-		_amount = newAmount;
-	}
-
-}
 
 class AccountImpl extends AccountPOA {
 
 	private int _accountId;
 	private String _details;
-	dateImpl _dateAccountCreated;
+	DateImpl _dateAccountCreated;
 	private float _balance;
 	private Vector<OperationImpl> _accountOperations;
+	
+	public AccountImpl(Account a) {
+		_accountId = a.accountId();
+		_details = a.details();
+		_dateAccountCreated = new DateImpl(a.dateAccountCreated());
+		_balance = a.balance();
+		for (Operation op : a.accountOperations()) {
+			_accountOperations.add(new OperationImpl(op));
+		}
+	}
 	
 	public AccountImpl(String name, String surname, float balance) {
 			_details = name + " " + surname;
@@ -152,7 +72,7 @@ class AccountImpl extends AccountPOA {
 
 	@Override
 	public void dateAccountCreated(date newDateAccountCreated) {
-		_dateAccountCreated = new dateImpl(newDateAccountCreated.year(), newDateAccountCreated.month(), newDateAccountCreated.day());
+		_dateAccountCreated = new DateImpl(newDateAccountCreated.year(), newDateAccountCreated.month(), newDateAccountCreated.day());
 	}
 
 	@Override
@@ -199,5 +119,5 @@ class AccountImpl extends AccountPOA {
 		return "accountId: " + String.format("%2s",Integer.valueOf(_accountId)).replaceAll(" " , "0") + 
 				", owner: " + _details + ", balance: " + _balance + ", operations: " + _accountOperations.size();
 	}
-	
 }
+
