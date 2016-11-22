@@ -18,6 +18,7 @@ public class AccountListDelegate {
 	}
 	
 	public void addAccount(AccountDelegate account) {
+		System.out.println("Adding account");
 		_instance.addAccount(account.getCorbaInstance()._this());
 	}
 	

@@ -2,6 +2,7 @@ package server;
 
 import org.omg.CORBA.Object;
 
+import account.AccountDelegate;
 import account.AccountListDelegate;
 import connection.Connection;
 import connection.ConnectionServerInterface;
@@ -14,10 +15,14 @@ public class Server {
 			connection.referenceObject();
 			
 			AccountListDelegate ald = new AccountListDelegate();
-			Object ref = connection.activateServant(ald.getCorbaInstance());
+			Object accountListRef = connection.activateServant(ald.getCorbaInstance());
+			AccountDelegate account = new AccountDelegate("","");
+			Object accountRef = connection.activateServant(account.getCorbaInstance());
+			
 			
 			try {
-				connection.bindObjectToName(ref, "myContext", "accounts", "Object");
+				connection.bindObjectToName(accountListRef, "myContext", "accountList", "AccountList");
+				connection.bindObjectToName(accountRef, "myContext", "account", "Account");
 				connection.runServer();
 			} catch (Exception e) {
 				System.err.println("Error when binding object: " + e.getLocalizedMessage());
