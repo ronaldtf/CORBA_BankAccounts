@@ -4,21 +4,42 @@ import org.omg.CORBA.Object;
 
 import account.AccountDelegate;
 import account.AccountListDelegate;
+import account.OperationDelegate;
+import account.OperationDelegate.OperationType;
 import connection.Connection;
-import connection.ConnectionClientInterface;
 import corbaAccount.AccountList;
 import corbaAccount.AccountListHelper;
 
 public class Client {
 	public static void main(String args[]) {
 		try {
-			ConnectionClientInterface connection = new Connection();
-			Object objAccountList = connection.getClientObject("myContext", "accountList", "AccountList");
+			Connection connection = Connection.getInstance();
+			Object objAccountList = connection.getClientObject("myContext", "AccountList0", "AccountList");
 			AccountList list = AccountListHelper.narrow(objAccountList);
+			
 			AccountListDelegate ald = new AccountListDelegate(list);
-			AccountDelegate ad = new AccountDelegate("MainName", "Main Surname");
-			ald.addAccount(ad);
-			System.out.println(ald.getAccounts().size());
+			AccountDelegate ad1 = new AccountDelegate("MainName1", "Main Surname1");
+			AccountDelegate ad2 = new AccountDelegate("MainName2", "Main Surname2");
+			connection.bindObjectToName(ad1.getCorbaInstance(), "myContext", "Account1", "Account");
+			connection.bindObjectToName(ad1.getCorbaInstance(), "myContext", "Account2", "Account");
+			
+			ald.addAccount(ad1.getCorbaInstance());
+			ald.addAccount(ad2.getCorbaInstance());
+			
+			System.out.println("Balance (before): " + ad1.getBalance());
+			System.out.println("Number of operations (before): " + ad1.getOperations().size());
+			
+			OperationDelegate op1 = new OperationDelegate(1000, OperationType.ADD);
+			OperationDelegate op2 = new OperationDelegate(250, OperationType.WITHDRAW);
+			connection.bindObjectToName(op1.getCorbaInstance(), "myContext", "Operation1", "Operation");
+			connection.bindObjectToName(op2.getCorbaInstance(), "myContext", "Operation2", "Operation");
+	
+			ad1.addOperation(op1.getCorbaInstance());
+			ad1.addOperation(op2.getCorbaInstance());
+			
+			System.out.println("Balance (after): " + ad1.getBalance());
+			System.out.println("Number of operations (after): " + ad1.getOperations().size());
+						
 		} catch (Exception e) {
 			System.err.println("An error has occurred: " + e.getLocalizedMessage());
 		}

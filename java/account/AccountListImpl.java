@@ -1,46 +1,60 @@
 package account;
 
-import java.util.Vector;
-
+import connection.Connection;
 import corbaAccount.Account;
 import corbaAccount.AccountList;
 import corbaAccount.AccountListPOA;
 
+// Skip vector. Use the list from the superclass instead.
+
 public class AccountListImpl extends AccountListPOA {
 
-	private Vector<AccountImpl> _accounts;
+	private static Connection _connection;
+	private Account[] _accountList = null;
+	private AccountList _al = null;
 	
-	public AccountListImpl(AccountList al) {
-		Account[] acs = al.accountsList();
-		_accounts = new Vector<AccountImpl>(acs.length);
-		for (Account account : acs) {
-			_accounts.addElement(new AccountImpl(account));
-		}
+	public AccountListImpl(Account[] a) throws Exception {
+		super();
+		accountsList(a);
+		_connection = Connection.getInstance();
+		_connection.activateServant(this);
 	}
-	
-	public AccountListImpl() {
-		_accounts = new Vector<AccountImpl>();
+
+	public AccountListImpl() throws Exception {
+		super();
+		_connection = Connection.getInstance();
+		_connection.activateServant(this);
+		_accountList = new Account[0];
+	}
+
+	public AccountListImpl(AccountList al) throws Exception {
+		super();
+		_al = al;
+		accountsList(al.accountsList());
+		_connection = Connection.getInstance();
 	}
 	
 	@Override
 	public Account[] accountsList() {
-		Account[] ac = new Account[_accounts.size()];
-		int pos = 0;
-		for (AccountImpl account : _accounts) {
-			ac[pos] = account._this();
-		}
-		return ac;
+		return _accountList;
 	}
 
 	@Override
 	public void accountsList(Account[] newAccountsList) {
-		for (Account ac : newAccountsList) {
-			_accounts.addElement(new AccountImpl(ac));
-		}
+		_accountList = newAccountsList;
 	}
 
 	@Override
 	public void addAccount(Account ac) {
-		_accounts.addElement(new AccountImpl(ac));
+		Account accounts[] = new Account[_accountList.length + 1];
+		int pos = 0;
+		for (Account a : _accountList) {
+			accounts[pos++] = a;
+		}
+		accounts[pos] = ac;
+		_accountList = accounts;
+		if (_al != null)
+			_al.accountsList(_accountList);
 	}
+
 }

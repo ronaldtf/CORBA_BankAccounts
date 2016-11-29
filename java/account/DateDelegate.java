@@ -1,34 +1,37 @@
 package account;
 
+import corbaAccount.date;
+
 public class DateDelegate {
 
-	private DateImpl instance;
+	private DateImpl _instance;
 	
-	public DateDelegate() {
-		instance = new DateImpl();
+	public DateDelegate() throws Exception {
+		_instance = new DateImpl();
 	}
 	
-	public DateDelegate(int year, int month, int day) {
-		instance = new DateImpl(year,  month,  day);
+	public DateDelegate(int year, int month, int day) throws Exception {
+		_instance = new DateImpl(year,  month,  day);
 	}
-	
+
 	public String toString() {
-		return instance.toString();
+		return _instance.toString();
 	}
 	
 	public int getYear() {
-		return instance.year();
+		return _instance.year();
 	}
 	
 	public int getMonth() {
-		return instance.month();
+		return _instance.month();
 	}
 	
 	public int getDay() {
-		return instance.day();
+		return _instance.day();
 	}
 	
-	public DateImpl getCorbaInstance() {
-		return instance;
+	public date getCorba_instance() {
+		return _instance._this();
 	}
+	
 }

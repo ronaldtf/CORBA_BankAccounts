@@ -11,6 +11,5 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 public interface ConnectionServerInterface {
 	public void bindObjectToName(Object objRef, String componentName, String contextName, String objectType) throws Exception;
 	public Object activateServant(Servant obj) throws ServantAlreadyActive, WrongPolicy, ServantNotActive;
-	public void referenceObject() throws InvalidName;
 	public void runServer() throws AdapterInactive;
 }

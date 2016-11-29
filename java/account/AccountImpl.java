@@ -1,37 +1,47 @@
 package account;
 
-import java.util.Vector;
-
+import connection.Connection;
 import corbaAccount.Account;
 import corbaAccount.AccountPOA;
 import corbaAccount.Operation;
 import corbaAccount.date;
+import corbaAccount.operationType;
 
 class AccountImpl extends AccountPOA {
 
 	private int _accountId;
-	private String _details;
-	DateImpl _dateAccountCreated;
+	private String _name;
+	private String _surname;
+	date _dateAccountCreated;
 	private float _balance;
-	private Vector<OperationImpl> _accountOperations;
+	private Operation[] _accountOperations = null;
+	private static int id;
+	private Connection _connection;
 	
-	public AccountImpl(Account a) {
-		_accountId = a.accountId();
-		_details = a.details();
-		_dateAccountCreated = new DateImpl(a.dateAccountCreated());
-		_balance = a.balance();
-		for (Operation op : a.accountOperations()) {
-			_accountOperations.add(new OperationImpl(op));
-		}
+	public AccountImpl(Account a) throws Exception {
+		super();
+		accountId(a.accountId());
+		name(a.name());
+		surname(a.surname());
+		dateAccountCreated(a.dateAccountCreated());
+		balance(a.balance());
+		accountOperations(a.accountOperations());
+		_connection = Connection.getInstance();
+		_connection.activateServant(this);
 	}
 	
-	public AccountImpl(String name, String surname, float balance) {
-			_details = name + " " + surname;
-			_balance = balance;
-			_accountOperations = new Vector<OperationImpl>();
+	public AccountImpl(String name, String surname, float balance) throws Exception {
+		super();
+		accountId(++id);
+		name(name);
+		surname(surname);
+		balance(balance);
+		accountOperations(new Operation[0]);
+		_connection = Connection.getInstance();
+		_connection.activateServant(this);
 	}
-	
-	public AccountImpl(String name, String surname) {
+		
+	public AccountImpl(String name, String surname) throws Exception {
 		this(name, surname, 0.0f);
 	}
 	
@@ -47,32 +57,32 @@ class AccountImpl extends AccountPOA {
 
 	@Override
 	public String name() {
-		throw new RuntimeException("Method not implemented");
+		return _name;
 	}
 
 	@Override
 	public void name(String newName) {
-		throw new RuntimeException("Method not implemented");		
+		_name = newName;	
 	}
 
 	@Override
 	public String surname() {
-		throw new RuntimeException("Method not implemented");
+		return _surname;
 	}
 
 	@Override
 	public void surname(String newSurname) {
-		throw new RuntimeException("Method not implemented");		
+		_surname = newSurname;	
 	}
 
 	@Override
 	public date dateAccountCreated() {
-		return _dateAccountCreated._this();
+		return _dateAccountCreated;
 	}
 
 	@Override
 	public void dateAccountCreated(date newDateAccountCreated) {
-		_dateAccountCreated = new DateImpl(newDateAccountCreated.year(), newDateAccountCreated.month(), newDateAccountCreated.day());
+		_dateAccountCreated = newDateAccountCreated;
 	}
 
 	@Override
@@ -87,37 +97,50 @@ class AccountImpl extends AccountPOA {
 
 	@Override
 	public Operation[] accountOperations() {
-		Operation op[] = new Operation[_accountOperations.size()];
-		int pos = 0;
-		for (OperationImpl opImpl : _accountOperations) {
-			op[pos].amount(opImpl.amount());
-			op[pos++].type(opImpl.type());
-		}
-		return op;
+		return _accountOperations;
 	}
 
 	@Override
 	public void accountOperations(Operation[] newAccountOperations) {
-		Operation[] operations = new Operation[newAccountOperations.length];
-		for (Operation op : operations) {
-			_accountOperations.addElement(new OperationImpl(op.type(), op.amount()));
+		_accountOperations = newAccountOperations;
+		for (Operation op : newAccountOperations) {
+			if (op.type() == operationType.WITHDRAW)
+				_balance -= op.amount();
+			else
+				_balance += op.amount();
 		}
 	}
 
 	@Override
 	public String details() {
-		return _details;
+		return _name + " " + _surname;
 	}
 
 	@Override
 	public void addOperation(Operation op) {
-		_accountOperations.addElement(new OperationImpl(op.type(), op.amount()));
+		Operation[] tmp = new Operation[_accountOperations.length + 1];
+		int pos = 0;
+		for (Operation o : _accountOperations) {
+			tmp[pos++] = o;
+		}
+		tmp[pos] = op;
+		_accountOperations = tmp;
+		
+		if (op.type() == operationType.WITHDRAW)
+			_balance -= op.amount();
+		else
+			_balance += op.amount();
 	}
 
 	@Override
 	public String _toString() {
 		return "accountId: " + String.format("%2s",Integer.valueOf(_accountId)).replaceAll(" " , "0") + 
-				", owner: " + _details + ", balance: " + _balance + ", operations: " + _accountOperations.size();
+				", owner: " + _name + " " + _surname + ", balance: " + _balance + ", operations: " + _accountOperations.length;
 	}
+	
+	public Account getCorbaInstance() {
+		return _this();
+	}
+	
 }
 

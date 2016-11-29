@@ -1,23 +1,25 @@
 package account;
 
+import corbaAccount.Operation;
+
 public class OperationDelegate {
 
 	public enum OperationType {ADD, WITHDRAW}
-	private OperationImpl instance;
+	private OperationImpl _instance;
 	
-	public OperationDelegate(float amount, OperationType type) {
-		instance = new OperationImpl(Utils.convertType(type), amount);
+	public OperationDelegate(float amount, OperationType type) throws Exception {
+		_instance = new OperationImpl(Utils.convertType(type), amount);
 	}
 	
 	public float getAmount() {
-		return instance.amount();
+		return _instance.amount();
 	}
 	
 	public OperationType getType() {
-		return Utils.convertType(instance.type());
+		return Utils.convertType(_instance.type());
 	}
 	
-	public OperationImpl getCorbaInstance() {
-		return instance;
+	public Operation getCorbaInstance() {
+		return _instance._this();
 	}
 }

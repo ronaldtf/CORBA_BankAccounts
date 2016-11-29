@@ -28,10 +28,19 @@ public class Connection implements ConnectionServerInterface, ConnectionClientIn
 
 	private ORB orb = null;
 	private static final String CONF_NAME = "conf/server.cfg";
+	private static boolean isReferenced = false;
 	private Properties properties;
 	private POA poa;
+	private static Connection _instance = null;
 	
-	public Connection() throws Exception {
+	public static Connection getInstance() throws Exception {
+		if (_instance == null) {
+			_instance = new Connection();
+		}
+		return _instance;
+	}
+	
+	private Connection() throws Exception {
 		init();
 	}
 	
@@ -48,10 +57,18 @@ public class Connection implements ConnectionServerInterface, ConnectionClientIn
 		System.out.println("ARGS: " + args[0] + " " + args[1]);
 		System.out.println("*************************************************");
 		orb = ORB.init(args, properties);
+		
+		referenceObject();
+		
+		POAManager pman = poa.the_POAManager();
+		pman.activate();
 	}
 	
-	public void referenceObject() throws InvalidName {
-		poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
+	private void referenceObject() throws InvalidName {
+		if (!isReferenced) {
+			poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
+			isReferenced = true;
+		}
 	}
 	
 	public void bindObjectToName(Object objRef, String componentName, String contextName, String objectType) throws Exception {
@@ -94,6 +111,7 @@ public class Connection implements ConnectionServerInterface, ConnectionClientIn
 		} catch (SystemException se) {
 			throw new Exception("A problem has occurred whe using the naming service");
 		}
+		System.out.println("Object of type " + objectType + " bound in componentName " + componentName + " and context " + contextName);
 	}	
 	
 	
@@ -102,10 +120,7 @@ public class Connection implements ConnectionServerInterface, ConnectionClientIn
 		return poa.servant_to_reference(obj);
 	}
 	
-	public void runServer() throws AdapterInactive {
-		POAManager pman = poa.the_POAManager();
-		pman.activate();
-
+	public void runServer() {
 		orb.run();
 	}
 	

@@ -1,5 +1,6 @@
 package account;
 
+import java.util.Arrays;
 import java.util.Vector;
 
 import corbaAccount.Account;
@@ -9,28 +10,23 @@ public class AccountListDelegate {
 
 	private AccountListImpl _instance;
 
-	public AccountListDelegate() {
+	public AccountListDelegate() throws Exception {
 		_instance = new AccountListImpl();
 	}
-
-	public AccountListDelegate(AccountList al) {
+	
+	public AccountListDelegate(AccountList al) throws Exception {
 		_instance = new AccountListImpl(al);
 	}
 	
-	public void addAccount(AccountDelegate account) {
-		System.out.println("Adding account");
-		_instance.addAccount(account.getCorbaInstance()._this());
+	public void addAccount(Account account) {
+		_instance.addAccount(account);
 	}
 	
-	public Vector<AccountDelegate> getAccounts() {
-		Vector<AccountDelegate> acDelegate = new Vector<AccountDelegate>(_instance.accountsList().length);
-		for (Account a : _instance.accountsList()) {
-			acDelegate.add(new AccountDelegate(a.name(), a.surname(), a.balance()));
-		}
-		return acDelegate;
+	public Vector<Account> getAccounts() {
+		return new Vector<Account>(Arrays.asList(_instance.accountsList()));
 	}
 	
-	public AccountListImpl getCorbaInstance() {
-		return _instance;
+	public AccountList getCorbaInstance() {
+		return _instance._this();
 	}
 }

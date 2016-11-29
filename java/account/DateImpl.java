@@ -1,5 +1,6 @@
 package account;
 
+import connection.Connection;
 import corbaAccount.date;
 import corbaAccount.datePOA;
 
@@ -8,21 +9,28 @@ public class DateImpl extends datePOA {
 	private int _day;
 	private int _month;
 	private int _year;
-	
-	public DateImpl(date d) {
-		_day = d.day();
-		_month = d.month();
-		_year = d.year();
+	private Connection _connection;
+
+	public DateImpl(date d) throws Exception {
+		super();
+		day(d.day());
+		month(d.month());
+		year(d.year());
+		_connection = Connection.getInstance();
+		_connection.activateServant(this);
 	}
 	
-	public DateImpl(int year, int month, int day) {
-		_year = year;
-		_month = month;
-		_day = day;
+	public DateImpl(int year, int month, int day) throws Exception {
+		super();
+		day(day);
+		month(month);
+		year(year);
+		_connection = Connection.getInstance();
+		_connection.activateServant(this);
 	}
 	
-	public DateImpl() {
-		this(0,0,0);
+	public DateImpl() throws Exception {
+		this(0, 0, 0);
 	}
 	
 	@Override

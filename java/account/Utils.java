@@ -34,6 +34,7 @@ public class Utils {
 		throw new RuntimeException("Type not implemented");
 	}
 
+	@SuppressWarnings("resource")
 	public static Properties readProperties(final String confName) throws Exception {
 		BufferedReader br = null;
 		InputStreamReader isr = null;
