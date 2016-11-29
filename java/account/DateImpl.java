@@ -1,5 +1,7 @@
 package account;
 
+import java.util.Calendar;
+
 import connection.Connection;
 import corbaAccount.date;
 import corbaAccount.datePOA;
@@ -30,7 +32,7 @@ public class DateImpl extends datePOA {
 	}
 	
 	public DateImpl() throws Exception {
-		this(0, 0, 0);
+		this(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 	}
 	
 	@Override
@@ -66,7 +68,7 @@ public class DateImpl extends datePOA {
 	@Override
 	public String _toString() {
 		return String.valueOf(_year) + "/" + 
-				String.format("%2s",Integer.valueOf(_month)).replaceAll(" " , "0") + 
+				String.format("%2s",Integer.valueOf(_month)).replaceAll(" " , "0") + "/" +
 				String.format("%2s",Integer.valueOf(_day)).replaceAll(" " , "0");
 	}
 	

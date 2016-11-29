@@ -15,7 +15,7 @@ public class DateDelegate {
 	}
 
 	public String toString() {
-		return _instance.toString();
+		return _instance._toString();
 	}
 	
 	public int getYear() {
@@ -30,7 +30,7 @@ public class DateDelegate {
 		return _instance.day();
 	}
 	
-	public date getCorba_instance() {
+	public date getCorbaInstance() {
 		return _instance._this();
 	}
 	

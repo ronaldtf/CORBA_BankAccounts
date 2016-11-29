@@ -37,9 +37,13 @@ public class Client {
 			ad1.addOperation(op1.getCorbaInstance());
 			ad1.addOperation(op2.getCorbaInstance());
 			
-			System.out.println("Balance (after): " + ad1.getBalance());
-			System.out.println("Number of operations (after): " + ad1.getOperations().size());
-						
+			AccountListDelegate ald2 = new AccountListDelegate(list);
+			System.out.println("Verify that the behavior is the expected: " + ald2.getAccounts().size() + " == 2");
+			assert (ald2.getAccounts().size() == 2);
+
+			System.out.println("Verify that the behavior is the expected: " + ald2.getAccounts().elementAt(0).balance() + " == 750.0");
+			assert (ald2.getAccounts().elementAt(0).balance() == 750.0);
+			
 		} catch (Exception e) {
 			System.err.println("An error has occurred: " + e.getLocalizedMessage());
 		}

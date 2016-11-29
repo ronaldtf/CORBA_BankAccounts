@@ -39,6 +39,9 @@ class AccountImpl extends AccountPOA {
 		accountOperations(new Operation[0]);
 		_connection = Connection.getInstance();
 		_connection.activateServant(this);
+		
+		DateDelegate dd = new DateDelegate();
+		_dateAccountCreated = dd.getCorbaInstance();
 	}
 		
 	public AccountImpl(String name, String surname) throws Exception {
