@@ -17,14 +17,11 @@ import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
 import org.omg.PortableServer.POAManager;
 import org.omg.PortableServer.Servant;
-import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 import org.omg.PortableServer.POAPackage.ServantAlreadyActive;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import account.Utils;
-import corbaAccount.AccountList;
-import corbaAccount.AccountListHelper;
 
 public class Connection {
 
