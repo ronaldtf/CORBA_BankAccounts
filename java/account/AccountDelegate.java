@@ -11,12 +11,12 @@ public class AccountDelegate {
 
 	private AccountImpl _instance;
 	
-	public AccountDelegate(String name, String surname) throws Exception {
-		_instance = new AccountImpl(name, surname);
+	public AccountDelegate(String name, String surname, int accountId) throws Exception {
+		_instance = new AccountImpl(name, surname, accountId);
 	}
 	
-	public AccountDelegate(String name, String surname, float balance) throws Exception {
-		_instance = new AccountImpl(name, surname, balance);
+	public AccountDelegate(String name, String surname, float balance, int accountId) throws Exception {
+		_instance = new AccountImpl(name, surname, balance, accountId);
 	}
 	
 	public int getAccountId() {

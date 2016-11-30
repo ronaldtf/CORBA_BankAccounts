@@ -15,7 +15,6 @@ class AccountImpl extends AccountPOA {
 	date _dateAccountCreated;
 	private float _balance;
 	private Operation[] _accountOperations = null;
-	private static int id;
 	private Connection _connection;
 	
 	public AccountImpl(Account a) throws Exception {
@@ -30,9 +29,9 @@ class AccountImpl extends AccountPOA {
 		_connection.activateServant(this);
 	}
 	
-	public AccountImpl(String name, String surname, float balance) throws Exception {
+	public AccountImpl(String name, String surname, float balance, int accountId) throws Exception {
 		super();
-		accountId(++id);
+		accountId(accountId);
 		name(name);
 		surname(surname);
 		balance(balance);
@@ -44,8 +43,8 @@ class AccountImpl extends AccountPOA {
 		_dateAccountCreated = dd.getCorbaInstance();
 	}
 		
-	public AccountImpl(String name, String surname) throws Exception {
-		this(name, surname, 0.0f);
+	public AccountImpl(String name, String surname, int accountId) throws Exception {
+		this(name, surname, 0.0f, accountId);
 	}
 	
 	@Override

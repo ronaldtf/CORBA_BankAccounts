@@ -18,8 +18,8 @@ public class Client {
 			AccountList list = AccountListHelper.narrow(objAccountList);
 			
 			AccountListDelegate ald = new AccountListDelegate(list);
-			AccountDelegate ad1 = new AccountDelegate("MainName1", "Main Surname1");
-			AccountDelegate ad2 = new AccountDelegate("MainName2", "Main Surname2");
+			AccountDelegate ad1 = new AccountDelegate("MainName1", "Main Surname1", 1);
+			AccountDelegate ad2 = new AccountDelegate("MainName2", "Main Surname2", 2);
 			connection.bindObjectToName(ad1.getCorbaInstance(), "myContext", "Account1", "Account");
 			connection.bindObjectToName(ad1.getCorbaInstance(), "myContext", "Account2", "Account");
 			
@@ -43,6 +43,10 @@ public class Client {
 
 			System.out.println("Verify that the behavior is the expected: " + ald2.getAccounts().elementAt(0).balance() + " == 750.0");
 			assert (ald2.getAccounts().elementAt(0).balance() == 750.0);
+			
+			System.out.println("Account ids:");
+			for (Integer id : ald.getAccountIds())
+				System.out.println("** accId: " + id);
 			
 		} catch (Exception e) {
 			System.err.println("An error has occurred: " + e.getLocalizedMessage());

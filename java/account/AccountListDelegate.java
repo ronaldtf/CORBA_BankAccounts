@@ -29,4 +29,12 @@ public class AccountListDelegate {
 	public AccountList getCorbaInstance() {
 		return _instance._this();
 	}
+	
+	public Vector<Integer> getAccountIds() {
+		Vector<Integer> v = new Vector<Integer>();
+		for (Account a : _instance.accountsList()) {
+			v.addElement(Integer.valueOf(a.accountId()));
+		}
+		return v;
+	}
 }
