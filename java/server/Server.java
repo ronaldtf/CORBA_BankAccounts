@@ -7,10 +7,10 @@ public class Server {
 
 	public static void main(String[] args) {
 		try {
+			@SuppressWarnings("unused")
 			AccountListDelegate ald = new AccountListDelegate();
 			try {
 				Connection connection = Connection.getInstance();
-				connection.bindObjectToName(ald.getCorbaInstance(), "myContext", "AccountList0", "AccountList");
 				connection.runServer();
 			} catch (Exception e) {
 				System.err.println("Error when starting server: " + e.getLocalizedMessage());

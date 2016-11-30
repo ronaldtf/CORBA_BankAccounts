@@ -10,6 +10,7 @@ module corbaAccount {
 	enum operationType {ADD, WITHDRAW};
 	
 	interface Operation {
+		attribute long operationId;
 		attribute operationType type;
 		attribute float amount;
 	};

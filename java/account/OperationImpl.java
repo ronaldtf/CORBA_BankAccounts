@@ -7,6 +7,7 @@ import corbaAccount.operationType;
 
 public class OperationImpl extends OperationPOA {
 	
+	private int _operationId;
 	private operationType _type;
 	private float _amount;
 	private Connection _connection;
@@ -15,14 +16,16 @@ public class OperationImpl extends OperationPOA {
 		super();
 		type(op.type());
 		amount(op.amount());
+		operationId(op.operationId());
 		_connection = Connection.getInstance();
 		_connection.activateServant(this);
 	}
 	
-	public OperationImpl(operationType type, float amount) throws Exception {
+	public OperationImpl(operationType type, float amount, int operationId) throws Exception {
 		super();
 		type(type);
 		amount(amount);
+		operationId(operationId);
 		_connection = Connection.getInstance();
 		_connection.activateServant(this);
 	}
@@ -45,5 +48,15 @@ public class OperationImpl extends OperationPOA {
 	@Override
 	public void amount(float newAmount) {
 		_amount = newAmount;
+	}
+
+	@Override
+	public int operationId() {
+		return _operationId;
+	}
+
+	@Override
+	public void operationId(int newOperationId) {
+		_operationId = newOperationId;
 	}
 }

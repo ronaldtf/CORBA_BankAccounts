@@ -23,8 +23,10 @@ import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import account.Utils;
+import corbaAccount.AccountList;
+import corbaAccount.AccountListHelper;
 
-public class Connection implements ConnectionServerInterface, ConnectionClientInterface{
+public class Connection {
 
 	private ORB orb = null;
 	private static final String CONF_NAME = "conf/server.cfg";
@@ -69,6 +71,21 @@ public class Connection implements ConnectionServerInterface, ConnectionClientIn
 			poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 			isReferenced = true;
 		}
+	}
+	
+	public Object getClientObject(String componentName, String contextName, String objectType) throws Exception {
+	      Object objRef = orb.resolve_initial_references("NameService");
+	      NamingContext namingContext = NamingContextHelper.narrow(objRef);
+	      NameComponent name[] = new NameComponent[] {
+	    		  new NameComponent(componentName, contextName),
+	    		  new NameComponent(objectType, "Object")
+	      };
+
+	      Object object = namingContext.resolve(name);
+	      if (object == null) {
+	    	  throw new Exception("clock reference is null");
+	      }
+	      return object;
 	}
 	
 	public void bindObjectToName(Object objRef, String componentName, String contextName, String objectType) throws Exception {
@@ -122,20 +139,5 @@ public class Connection implements ConnectionServerInterface, ConnectionClientIn
 	
 	public void runServer() {
 		orb.run();
-	}
-	
-	public Object getClientObject(String componentName, String contextName, String objectType) throws Exception {
-	      Object objRef = orb.resolve_initial_references("NameService");
-	      NamingContext namingContext = NamingContextHelper.narrow(objRef);
-	      NameComponent name[] = new NameComponent[] {
-	    		  new NameComponent(componentName, contextName),
-	    		  new NameComponent(objectType, "Object")
-	      };
-
-	      Object object = namingContext.resolve(name);
-	      if (object == null) {
-	    	  throw new Exception("clock reference is null");
-	      }
-	      return object;
 	}
 }

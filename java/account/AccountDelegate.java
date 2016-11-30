@@ -3,6 +3,7 @@ package account;
 import java.util.Arrays;
 import java.util.Vector;
 
+import connection.Connection;
 import corbaAccount.Account;
 import corbaAccount.Operation;
 import corbaAccount.date;
@@ -12,7 +13,13 @@ public class AccountDelegate {
 	private AccountImpl _instance;
 	
 	public AccountDelegate(String name, String surname, int accountId) throws Exception {
+		this(name, surname, accountId, true);
+	}
+
+	public AccountDelegate(String name, String surname, int accountId, boolean publish) throws Exception {
 		_instance = new AccountImpl(name, surname, accountId);
+		if (publish)
+			Connection.getInstance().bindObjectToName(_instance._this(), "myContext", "Account"+_instance.accountId(), "Account");
 	}
 	
 	public AccountDelegate(String name, String surname, float balance, int accountId) throws Exception {
@@ -44,8 +51,8 @@ public class AccountDelegate {
 		return new Vector<Operation>(Arrays.asList(_instance.accountOperations()));
 	}
 	
-	public void addOperation(Operation op) {
-		_instance.addOperation(op);
+	public void addOperation(OperationDelegate op) {
+		_instance.addOperation(op.getCorbaInstance());
 	}
 	
 	public Account getCorbaInstance() {
