@@ -13,7 +13,6 @@
  */
 
 #include <iostream>
-#include <map>
 #include "Connection.h"
 #include "../utils/Utils.h"
 
