@@ -1,5 +1,6 @@
 build:
 	javac -cp corbaAccount:. ./account/*.java
-	javac -cp corbaAccount:./account:.:./server ./server/Server.java
-	javac -cp corbaAccount:./account:.:./client ./client/Client.java
+	javac ./utils/Utils.java
+	javac -cp corbaAccount:./account:./utils:.:./server ./server/Server.java
+	javac -cp corbaAccount:./account:./utils:.:./client ./client/Client.java
 
