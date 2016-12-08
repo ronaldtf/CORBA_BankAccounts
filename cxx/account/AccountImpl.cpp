@@ -38,6 +38,16 @@ AccountImpl::AccountImpl(std::string name, std::string surname, float balance) :
 	_connection->activateServant(this);
 }
 
+
+AccountImpl::AccountImpl(std::string name, std::string surname, float balance, int accountId) : _accountId(accountId), _name(name), _surname(surname),
+		_balance(balance), _accountOperations(){
+
+	_connection = connection::Connection::getInstance();
+	_connection->activateServant(this);
+
+	_dateAccountCreated = DateImpl();
+}
+
 ::CORBA::Long AccountImpl::accountId() {
 	return _accountId;
 }

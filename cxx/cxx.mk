@@ -7,3 +7,6 @@ build:
 	g++ -std=c++11 -o account/OperationImpl.o -c account/OperationImpl.cpp
 	g++ -std=c++11 -o account/AccountImpl.o -c account/AccountImpl.cpp
 	g++ -std=c++11 -o account/AccountListImpl.o -c account/AccountListImpl.cpp
+	g++ -std=c++11 -o account/AccountDelegate.o -c account/AccountDelegate.cpp
+clean:
+	rm utils/*.o connection/*.o account/*.o

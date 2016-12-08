@@ -20,6 +20,7 @@ void Utils::trim(std::string &s) {
 	s.erase(std::find_if(s.rbegin(), s.rend(), std::not1(std::ptr_fun<int,int>(std::isspace))).base(), s.end());
 };
 
+
 std::vector<std::string> Utils::tokenize(const std::string &s) {
 	std::vector<std::string> tokens;
 	std::string::const_iterator it = s.begin();
@@ -57,6 +58,25 @@ void Utils::convertMapToArray(std::map<std::string, std::string> m, char**** arr
 		(*arr)[pos++][1] = const_cast<char*>(it->second.c_str());
 	}
 }
+
+corbaAccount::operationType Utils::convertType(OperationType opType) {
+	switch (opType) {
+	case OperationType::ADD:
+		return corbaAccount::operationType::ADD;
+	case OperationType::WITHDRAW:
+		return corbaAccount::operationType::WITHDRAW;
+	}
+}
+
+Utils::OperationType Utils::convertType(corbaAccount::operationType opType) {
+	switch (opType) {
+	case corbaAccount::operationType::ADD:
+		return OperationType::ADD;
+	case corbaAccount::operationType::WITHDRAW:
+		return OperationType::WITHDRAW;
+	}
+}
+
 }
 
 

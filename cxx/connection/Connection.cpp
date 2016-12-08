@@ -110,7 +110,7 @@ CORBA::Object_ptr Connection::getClientObject(std::string componentName, std::st
 	return CORBA::Object::_nil();
 }
 
-void Connection::bindObjectToName(CORBA::ORB_ptr orb, CORBA::Object_ptr objref, std::string componentName, std::string contextName, std::string objectType) {
+void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componentName, std::string contextName, std::string objectType) {
 	CosNaming::NamingContext_var rootContext;
 	try {
 		CORBA::Object_var obj = orb->resolve_initial_references("NameService");
