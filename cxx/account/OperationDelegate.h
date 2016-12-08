@@ -1,0 +1,29 @@
+/**
+ * \file OperationDelegate.h
+ * \author Ronald T. Fernandez
+ * \mail ronaldtfernandez@gmail.com
+ * \version 1.0
+ */
+
+#ifndef OPERATIONDELEGATE_H_
+#define OPERATIONDELEGATE_H_
+
+#include "OperationImpl.h"
+#include "../utils/Utils.h"
+#include "../idl/Account.hh"
+
+namespace account {
+
+class OperationDelegate {
+private:
+	OperationImpl _instance;
+public:
+	OperationDelegate();
+	OperationDelegate(float amount, utils::Utils::OperationType type, int operationId, bool publish=false);
+	corbaAccount::Operation_ptr getCorbaInstance();
+	virtual ~OperationDelegate();
+};
+
+} /* namespace account */
+
+#endif /* OPERATIONDELEGATE_H_ */
