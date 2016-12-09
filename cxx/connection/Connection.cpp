@@ -145,7 +145,7 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 
 		CosNaming::Name objectName;
 		objectName.length(1);
-		objectName[0].id = (const char*) objectType;
+		objectName[0].id = (const char*) objectType.c_str();
 		objectName[0].kind = (const char*) "Object";
 
 		try {
