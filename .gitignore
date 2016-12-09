@@ -7,3 +7,5 @@ Debug
 idl/Account.hh
 idl/AccountSK.cc
 idl/corbaAccount
+cxx/Server
+cxx/Client
