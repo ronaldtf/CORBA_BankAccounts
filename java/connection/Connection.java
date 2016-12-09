@@ -80,7 +80,7 @@ public class Connection {
 
 	      Object object = namingContext.resolve(name);
 	      if (object == null) {
-	    	  throw new Exception("clock reference is null");
+	    	  throw new Exception("Reference is null");
 	      }
 	      return object;
 	}
