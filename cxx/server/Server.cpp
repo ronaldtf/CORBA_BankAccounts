@@ -5,8 +5,8 @@
  * \version 1.0
  */
 
-#include "account/AccountListDelegate.h"
-#include "connection/Connection.h"
+#include "../account/AccountListDelegate.h"
+#include "../connection/Connection.h"
 #include <iostream>
 
 int main() {

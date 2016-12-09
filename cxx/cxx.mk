@@ -11,31 +11,7 @@ build:
 	g++ -std=c++11 -o account/OperationDelegate.o -c account/OperationDelegate.cpp	
 	g++ -std=c++11 -o account/AccountDelegate.o -c account/AccountDelegate.cpp
 	g++ -std=c++11 -o account/AccountListDelegate.o -c account/AccountListDelegate.cpp
-	g++ $(FLAGS) -o Server\
-						idl/AccountSK.o\
-						connection/Connection.o\
-						account/AccountListDelegate.o\
-						account/AccountListImpl.o\
-						account/AccountDelegate.o\
-						account/AccountImpl.o\
-						account/DateDelegate.o\
-						account/DateImpl.o\
-						account/OperationDelegate.o\
-						account/OperationImpl.o\
-						utils/Utils.o\
-						Server.cpp
-	g++ $(FLAGS) -o Client\
-						idl/AccountSK.o\
-						connection/Connection.o\
-						account/AccountListDelegate.o\
-						account/AccountListImpl.o\
-						account/AccountDelegate.o\
-						account/AccountImpl.o\
-						account/DateDelegate.o\
-						account/DateImpl.o\
-						account/OperationDelegate.o\
-						account/OperationImpl.o\
-						utils/Utils.o\
-						Client.cpp
+	g++ $(FLAGS) -o server/Server idl/AccountSK.o connection/Connection.o account/AccountListDelegate.o account/AccountListImpl.o account/AccountDelegate.o account/AccountImpl.o account/DateDelegate.o account/DateImpl.o account/OperationDelegate.o account/OperationImpl.o utils/Utils.o server/Server.cpp
+	g++ $(FLAGS) -o client/Client idl/AccountSK.o connection/Connection.o account/AccountListDelegate.o account/AccountListImpl.o account/AccountDelegate.o account/AccountImpl.o account/DateDelegate.o account/DateImpl.o account/OperationDelegate.o account/OperationImpl.o utils/Utils.o client/Client.cpp
 clean:
-	rm utils/*.o connection/*.o account/*.o Client Server
+	rm utils/*.o connection/*.o account/*.o client/Client server/Server

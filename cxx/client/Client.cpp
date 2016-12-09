@@ -6,10 +6,10 @@
  */
 
 #include <iostream>
-#include "idl/Account.hh"
-#include "connection/Connection.h"
-#include "account/AccountDelegate.h"
-#include "account/AccountListDelegate.h"
+#include "../idl/Account.hh"
+#include "../connection/Connection.h"
+#include "../account/AccountDelegate.h"
+#include "../account/AccountListDelegate.h"
 
 int main() {
 	try {
