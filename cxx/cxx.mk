@@ -24,5 +24,18 @@ build:
 						account/OperationImpl.o\
 						utils/Utils.o\
 						Server.cpp
+	g++ $(FLAGS) -o Client\
+						idl/AccountSK.o\
+						connection/Connection.o\
+						account/AccountListDelegate.o\
+						account/AccountListImpl.o\
+						account/AccountDelegate.o\
+						account/AccountImpl.o\
+						account/DateDelegate.o\
+						account/DateImpl.o\
+						account/OperationDelegate.o\
+						account/OperationImpl.o\
+						utils/Utils.o\
+						Client.cpp
 clean:
 	rm utils/*.o connection/*.o account/*.o

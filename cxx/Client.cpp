@@ -6,39 +6,42 @@
  */
 
 #include <iostream>
-
+#include "idl/Account.hh"
+#include "connection/Connection.h"
+#include "account/AccountDelegate.h"
+#include "account/AccountListDelegate.h"
 
 int main() {
 	try {
-//		Object objAccountList = Connection.getInstance().getClientObject("myContext", "AccountList", "AccountList");
-//		AccountList list = AccountListHelper.narrow(objAccountList);
-//
-//		AccountListDelegate ald = new AccountListDelegate(list);
-//		AccountDelegate ad1 = new AccountDelegate("MainName1", "Main Surname1", 1);
-//		AccountDelegate ad2 = new AccountDelegate("MainName2", "Main Surname2", 2);
-//
-//		ald.addAccount(ad1);
-//		ald.addAccount(ad2);
-//
-//		System.out.println("Balance (before): " + ad1.getBalance());
-//		System.out.println("Number of operations (before): " + ad1.getOperations().size());
-//
-//		OperationDelegate op1 = new OperationDelegate(1000, OperationType.ADD, 1);
-//		OperationDelegate op2 = new OperationDelegate(250, OperationType.WITHDRAW, 2);
-//
-//		ad1.addOperation(op1);
-//		ad1.addOperation(op2);
-//
-//		AccountListDelegate ald2 = new AccountListDelegate(list);
-//		System.out.println("Verify that the behavior is the expected: " + ald2.getAccounts().size() + " == 2");
-//		assert (ald2.getAccounts().size() == 2);
-//
-//		System.out.println("Verify that the behavior is the expected: " + ald2.getAccounts().elementAt(0).balance() + " == 750.0");
-//		assert (ald2.getAccounts().elementAt(0).balance() == 750.0);
-//
-//		System.out.println("Account ids:");
-//		for (Integer id : ald.getAccountIds())
-//			System.out.println("** accId: " + id);
+		CORBA::Object_ptr objAccountList = connection::Connection::getInstance()->getClientObject("myContext", "AccountList", "AccountList");
+		corbaAccount::AccountList_ptr list = corbaAccount::AccountList::_narrow(objAccountList);
+
+		account::AccountListDelegate ald = new account::AccountListDelegate(list);
+		account::AccountDelegate ad1 = account::AccountDelegate("MainName1", "Main Surname1", 1);
+		account::AccountDelegate ad2 = account::AccountDelegate("MainName2", "Main Surname2", 2);
+
+		ald.addAccount(ad1);
+		ald.addAccount(ad2);
+
+		std::cout << "Balance (before): " << ad1.getBalance() << std::endl;
+		std::cout << "Number of operations (before): " << ad1.getOperations().size() << std::endl;
+
+		account::OperationDelegate op1 = account::OperationDelegate(1000, utils::Utils::OperationType::ADD, 1);
+		account::OperationDelegate op2 = account::OperationDelegate(250, utils::Utils::OperationType::WITHDRAW, 2);
+
+		ad1.addOperation(op1);
+		ad1.addOperation(op2);
+
+		account::AccountListDelegate ald2 = account::AccountListDelegate(list);
+		std::cout << "Verify that the behavior is the expected: " << ald2.getAccounts().size()  << " == 2" << std::endl;
+		//std::assert (ald2.getAccounts().size() == 2);
+
+		std::cout << "Verify that the behavior is the expected: " << ald2.getAccounts().at(0)->balance() << " == 750.0" << std::endl;
+		//assert (ald2.getAccounts().at(0)->balance() == 750.0);
+
+		std::cout << "Account ids:" << std::endl;
+		for (int id : ald.getAccountIds())
+			std::cout << "** accId: " << id << std::endl;
 
 	} catch (...) {
 		std::cerr << "An error has occurred " << std::endl;
