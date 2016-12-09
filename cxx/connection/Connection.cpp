@@ -53,15 +53,14 @@ void Connection::init() {
 
 	referenceObject();
 
-	PortableServer::POAManager_var poaManager = poa->the_POAManager();
-	poaManager->activate();
+	PortableServer::POAManager_var pman = poa->the_POAManager();
+	pman->activate();
 
 }
 
 void Connection::referenceObject() {
 	if (!isReferenced) {
-		CORBA::Object_var poaObject = orb->resolve_initial_references("RootPOA");
-		poa = PortableServer::POA::_narrow(poaObject);
+		poa = PortableServer::POA::_narrow(orb->resolve_initial_references("RootPOA"));
 		isReferenced = true;
 	}
 }
@@ -77,7 +76,7 @@ CORBA::Object_ptr Connection::getClientObject(std::string componentName, std::st
 
 	try {
 		CORBA::Object_var obj;
-		obj = orb->resolve_initial_references(componentName.c_str());
+		obj = orb->resolve_initial_references("NameService");
 
 		rootContext = CosNaming::NamingContext::_narrow(obj);
 		if (CORBA::is_nil(rootContext)) {
@@ -91,7 +90,7 @@ CORBA::Object_ptr Connection::getClientObject(std::string componentName, std::st
 
 	CosNaming::Name name;
 	name.length(2);
-	name[0].id = "my_context";
+	name[0].id = componentName.c_str();
 	name[0].kind = contextName.c_str();
 	name[1].id = objectType.c_str();
 	name[1].kind = "Object";
@@ -110,12 +109,13 @@ CORBA::Object_ptr Connection::getClientObject(std::string componentName, std::st
 }
 
 void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componentName, std::string contextName, std::string objectType) {
-	CosNaming::NamingContext_var rootContext;
+	CosNaming::NamingContext_var namingContext;
+	CosNaming::NamingContext_var subContext;
 	try {
 		CORBA::Object_var obj = orb->resolve_initial_references("NameService");
-		rootContext = CosNaming::NamingContext::_narrow(obj);
+		namingContext = CosNaming::NamingContext::_narrow(obj);
 
-		if (CORBA::is_nil(rootContext)) {
+		if (CORBA::is_nil(namingContext)) {
 			std::cerr << "Failed to narrow the root naming context." << std::endl;
 			throw std::exception();
 		}
@@ -125,19 +125,18 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 	}
 
 	try {
-		CosNaming::Name context;
-		context.length(1);
-		context[0].id = componentName.c_str();
-		context[0].kind = contextName.c_str();
+		CosNaming::Name nameComponent;
+		nameComponent.length(1);
+		nameComponent[0].id = componentName.c_str();
+		nameComponent[0].kind = contextName.c_str();
 
-		CosNaming::NamingContext_var testContext;
 		try {
-			testContext = rootContext->bind_new_context(context);
+			subContext = namingContext->bind_new_context(nameComponent);
 		} catch (CosNaming::NamingContext::AlreadyBound& ex) {
 			CORBA::Object_var obj;
-			obj = rootContext->resolve(context);
-			testContext = CosNaming::NamingContext::_narrow(obj);
-			if (CORBA::is_nil(testContext)) {
+			obj = namingContext->resolve(nameComponent);
+			subContext = CosNaming::NamingContext::_narrow(obj);
+			if (CORBA::is_nil(subContext)) {
 				std::cerr << "Failed to narrow naming context." << std::endl;
 				throw std::exception();
 			}
@@ -149,9 +148,9 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 		objectName[0].kind = (const char*) "Object";
 
 		try {
-			testContext->bind(objectName, objref);
+			subContext->bind(objectName, objref);
 		} catch (CosNaming::NamingContext::AlreadyBound& ex) {
-			testContext->rebind(objectName, objref);
+			subContext->rebind(objectName, objref);
 		}
 
 	} catch (CORBA::COMM_FAILURE& ex) {

@@ -20,7 +20,7 @@ AccountListImpl::AccountListImpl(::corbaAccount::accountListType& a) : _accountL
 	_connection->activateServant(this);
 };
 
-AccountListImpl::AccountListImpl() : _accountList() {
+AccountListImpl::AccountListImpl() : _accountList(), _al(nullptr) {
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 };
