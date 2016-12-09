@@ -38,4 +38,4 @@ build:
 						utils/Utils.o\
 						Client.cpp
 clean:
-	rm utils/*.o connection/*.o account/*.o
+	rm utils/*.o connection/*.o account/*.o Client Server
