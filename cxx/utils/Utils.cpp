@@ -25,11 +25,13 @@ std::vector<std::string> Utils::tokenize(const std::string &s) {
 	std::vector<std::string> tokens;
 	std::string::const_iterator it = s.begin();
 	while (it != s.end()) {
-		std::string::const_iterator it2 = std::find(it, s.end(), ' ');
-		if (it2 != s.end()) {
-			tokens.push_back(std::string(it + 1, it2 - 1));
-			it = it2 + 1;
+		std::string::const_iterator it2 = std::find(it, s.end(), '=');
+		std::string tmp = std::string(it, it2);
+		trim(tmp);
+		if (!tmp.empty()) {
+			tokens.push_back(tmp);
 		}
+		it = (it2 == s.end()) ? it2 : it2 + 1;
 	}
 	return tokens;
 }
@@ -45,18 +47,12 @@ void Utils::parseFile(const std::string fileName, std::map<std::string, std::str
 		if (tokens.size() < 2) {
 			std::cerr << "Wrong file format. It must contain lines with <key> <value>" << std::endl;
 			throw std::exception();
+		} else {
+			properties.insert(std::make_pair(tokens.at(0), tokens.at(1)));
 		}
-		properties.insert(std::make_pair(tokens.at(0), tokens.at(1)));
+		tokens.clear();
 	}
 	ifs->close();
-}
-
-void Utils::convertMapToArray(std::map<std::string, std::string> m, char**** arr) {
-	unsigned int pos = 0;
-	for (std::map<std::string, std::string>::iterator it = m.begin(); it != m.end(); ++it) {
-		(*arr)[pos][0] = const_cast<char*>(it->first.c_str());
-		(*arr)[pos++][1] = const_cast<char*>(it->second.c_str());
-	}
 }
 
 corbaAccount::operationType Utils::convertType(OperationType opType) {

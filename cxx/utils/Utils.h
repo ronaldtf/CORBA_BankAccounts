@@ -21,8 +21,6 @@ namespace utils {
 
 		static void parseFile(const std::string fileName, std::map<std::string, std::string> &properties);
 
-		static void convertMapToArray(std::map<std::string, std::string> m, char**** arr);
-
 		static corbaAccount::operationType convertType(OperationType opType);
 
 		static Utils::OperationType convertType(corbaAccount::operationType opType);

@@ -32,11 +32,12 @@ Connection::~Connection() {
 }
 
 void Connection::init() {
-	std::map<std::string, std::string> properties;
+	std::map<std::string, std::string> properties = std::map<std::string, std::string>();
 	utils::Utils::parseFile(CONF_NAME, properties);
 
-	char *key = const_cast<char*>(std::string("-ORBInitRef").c_str());
-	char *value = const_cast<char*>(std::string("NameService=corbaname::" + properties.at("org.omg.CORBA.ORBInitialHost") + ":" + properties.at("org.omg.CORBA.ORBInitialPort")).c_str());
+	char* key = const_cast<char*>(std::string("-ORBInitRef").c_str());
+	std::string valueStr = std::string("NameService=corbaname::" + properties.at("org.omg.CORBA.ORBInitialHost") + ":" + properties.at("org.omg.CORBA.ORBInitialPort")).c_str();
+	char *value = (char*)valueStr.c_str();
 	char* args[] = { key, value};
 
 	std::cout << "****************** PROPERTIES *******************" << std::endl;
@@ -46,16 +47,14 @@ void Connection::init() {
 	std::cout << "*************************************************" << std::endl;
 	std::cout << "ARGS: " << args[0] << " " << args[1] << std::endl;
 	std::cout << "*************************************************" << std::endl;
-	char* arr[properties.size()][2];
-	utils::Utils::convertMapToArray(properties, (char****)arr);
+
 	int argc=2;
-	orb = CORBA::ORB_init(argc, (char**)args, "", (const char*(*)[2])arr);
+	orb = CORBA::ORB_init(argc, args);
 
 	referenceObject();
 
 	PortableServer::POAManager_var poaManager = poa->the_POAManager();
 	poaManager->activate();
-
 
 }
 
