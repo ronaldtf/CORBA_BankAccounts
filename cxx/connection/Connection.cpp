@@ -61,7 +61,7 @@ void Connection::init() {
 void Connection::referenceObject() {
 	if (!isReferenced) {
 		CORBA::Object_var poaObject = orb->resolve_initial_references("RootPOA");
-		poa = PortableServer::POA::_narrow(poaObject.in());
+		poa = PortableServer::POA::_narrow(poaObject);
 		isReferenced = true;
 	}
 }
@@ -113,21 +113,21 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 	CosNaming::NamingContext_var rootContext;
 	try {
 		CORBA::Object_var obj = orb->resolve_initial_references("NameService");
-
 		rootContext = CosNaming::NamingContext::_narrow(obj);
+
 		if (CORBA::is_nil(rootContext)) {
 			std::cerr << "Failed to narrow the root naming context." << std::endl;
 			throw std::exception();
 		}
 	} catch (CORBA::ORB::InvalidName& ex) {
 		std::cerr << "Service required is not valid" << std::endl;
-		throw ex;
+		throw std::exception();
 	}
 
 	try {
 		CosNaming::Name context;
 		context.length(1);
-		context[0].id = "my_context";
+		context[0].id = componentName.c_str();
 		context[0].kind = contextName.c_str();
 
 		CosNaming::NamingContext_var testContext;
@@ -145,7 +145,7 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 
 		CosNaming::Name objectName;
 		objectName.length(1);
-		objectName[0].id = (const char*) "Clock";
+		objectName[0].id = (const char*) objectType;
 		objectName[0].kind = (const char*) "Object";
 
 		try {
@@ -156,7 +156,7 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 
 	} catch (CORBA::COMM_FAILURE& ex) {
 		std::cerr << "Unable to access to the naming service" << std::endl;
-		throw ex;
+		throw std::exception();
 	} catch (CORBA::SystemException&) {
 		std::cerr << "A system exception has occurred" << std::endl;
 		throw std::exception();
