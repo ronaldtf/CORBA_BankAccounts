@@ -16,9 +16,16 @@ class DateDelegate {
 private:
 	DateImpl* _instance;
 public:
-	DateDelegate();
+	DateDelegate(bool publish = true);
 	DateDelegate(corbaAccount::date_ptr d);
 	virtual ~DateDelegate();
+	DateDelegate(int year, int month, int day);
+	DateDelegate(int year, int month, int day, bool publish);
+	std::string toString();
+	int getYear();
+	int getMonth();
+	int getDay();
+	corbaAccount::date_ptr getCorbaInstance();
 };
 
 } /* namespace account */

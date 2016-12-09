@@ -6,16 +6,59 @@
  */
 
 #include "AccountListDelegate.h"
+#include "../connection/Connection.h"
+#include <iostream>
+#include "../idl/Account.hh"
 
 namespace account {
 
-AccountListDelegate::AccountListDelegate() {
-	// TODO Auto-generated constructor stub
+AccountListDelegate::AccountListDelegate(bool publish) {
+	_instance = new AccountListImpl;
+	if (publish) {
+		try {
+			connection::Connection::getInstance()->bindObjectToName(_instance->_this(), "myContext", "AccountList", "AccountList");
+		} catch (std::exception& e) {
+			std::cerr << "Trying to bind an AccountList which is already bound" << std::endl;
+			std::cerr << "Only one AccountList is possible in the name service" << std::endl;
+		}
+	}
+}
 
+AccountListDelegate::AccountListDelegate(::corbaAccount::AccountList* al)  {
+	_instance = new AccountListImpl(al);
 }
 
 AccountListDelegate::~AccountListDelegate() {
-	// TODO Auto-generated destructor stub
+	if (_instance != nullptr)
+		delete _instance;
+}
+
+void AccountListDelegate::addAccount(AccountDelegate account) {
+	_instance->addAccount(account.getCorbaInstance());
+}
+
+std::vector<corbaAccount::Account_ptr> AccountListDelegate::getAccounts() {
+	std::vector<corbaAccount::Account_ptr> v;
+	corbaAccount::accountListType* ac = _instance->accountsList();
+	for (int i=0; i<ac->length(); ++i) {
+		corbaAccount::Account_ptr account = (*ac)[i];
+		v.push_back(account);
+	}
+
+	return v;
+}
+
+corbaAccount::AccountList_ptr AccountListDelegate::getCorbaInstance() {
+	return _instance->_this();
+}
+
+std::vector<int> AccountListDelegate::getAccountIds() {
+	std::vector<int> v;
+	corbaAccount::accountListType* ac = _instance->accountsList();
+	for (int i=0; i<ac->length(); ++i){
+		v.push_back((*ac)[i]->accountId());
+	}
+	return v;
 }
 
 } /* namespace account */

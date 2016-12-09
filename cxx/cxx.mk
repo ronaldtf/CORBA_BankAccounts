@@ -7,6 +7,22 @@ build:
 	g++ -std=c++11 -o account/OperationImpl.o -c account/OperationImpl.cpp
 	g++ -std=c++11 -o account/AccountImpl.o -c account/AccountImpl.cpp
 	g++ -std=c++11 -o account/AccountListImpl.o -c account/AccountListImpl.cpp
+	g++ -std=c++11 -o account/DateDelegate.o -c account/DateDelegate.cpp
+	g++ -std=c++11 -o account/OperationDelegate.o -c account/OperationDelegate.cpp	
 	g++ -std=c++11 -o account/AccountDelegate.o -c account/AccountDelegate.cpp
+	g++ -std=c++11 -o account/AccountListDelegate.o -c account/AccountListDelegate.cpp
+	g++ $(FLAGS) -o Server\
+						idl/AccountSK.o\
+						connection/Connection.o\
+						account/AccountListDelegate.o\
+						account/AccountListImpl.o\
+						account/AccountDelegate.o\
+						account/AccountImpl.o\
+						account/DateDelegate.o\
+						account/DateImpl.o\
+						account/OperationDelegate.o\
+						account/OperationImpl.o\
+						utils/Utils.o\
+						Server.cpp
 clean:
 	rm utils/*.o connection/*.o account/*.o

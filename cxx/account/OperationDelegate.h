@@ -16,10 +16,12 @@ namespace account {
 
 class OperationDelegate {
 private:
-	OperationImpl _instance;
+	OperationImpl* _instance;
 public:
 	OperationDelegate();
-	OperationDelegate(float amount, utils::Utils::OperationType type, int operationId, bool publish=false);
+	OperationDelegate(float amount, utils::Utils::OperationType type, int operationId, bool publish=true);
+	float getAmount();
+	utils::Utils::OperationType getType();
 	corbaAccount::Operation_ptr getCorbaInstance();
 	virtual ~OperationDelegate();
 };

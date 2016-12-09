@@ -167,7 +167,6 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 CORBA::Object_ptr Connection::activateServant(PortableServer::ServantBase* obj) {
 	poa->activate_object(obj);
 	return poa->servant_to_reference(obj);
-
 }
 
 void Connection::runServer() {
