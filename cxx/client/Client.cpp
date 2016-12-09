@@ -43,8 +43,10 @@ int main() {
 		for (int id : ald.getAccountIds())
 			std::cout << "** accId: " << id << std::endl;
 
-	} catch (...) {
-		std::cerr << "An error has occurred " << std::endl;
+	} catch (std::exception& e) {
+		std::cerr << "An error has occurred " << e.what() << std::endl;
+	} catch (::CORBA::TRANSIENT& e) {
+		std::cerr << "A transient exception has occurred: " << e.NP_minorString() << std::endl;
 	}
 }
 

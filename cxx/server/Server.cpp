@@ -18,5 +18,7 @@ int main() {
 		std::cerr << "Error when starting server: " << std::string(e.what()) << std::endl;;
 	}
 
+	delete ald;
+
 	return 0;
 }
