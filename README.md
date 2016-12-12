@@ -18,4 +18,6 @@ To run the java version, run the following commands (in the java folder):
 
 ## C++
 
-(to be included)
+1. *tnameserv -ORBInitialPort 9999*
+2. Server: *cd cxx && ./server/Server*
+3. Client: *cd cxx && ./client/Client*
