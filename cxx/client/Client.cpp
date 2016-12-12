@@ -10,6 +10,7 @@
 #include "../connection/Connection.h"
 #include "../account/AccountDelegate.h"
 #include "../account/AccountListDelegate.h"
+#include <cassert>
 
 int main() {
 	try {
@@ -34,10 +35,10 @@ int main() {
 
 		account::AccountListDelegate ald2 = account::AccountListDelegate(list);
 		std::cout << "Verify that the behavior is the expected: " << ald2.getAccounts().size()  << " == 2" << std::endl;
-		//std::assert (ald2.getAccounts().size() == 2);
+		assert (ald2.getAccounts().size() == 2);
 
 		std::cout << "Verify that the behavior is the expected: " << ald2.getAccounts().at(0)->balance() << " == 750.0" << std::endl;
-		//assert (ald2.getAccounts().at(0)->balance() == 750.0);
+		assert (ald2.getAccounts().at(0)->balance() == 750.0);
 
 		std::cout << "Account ids:" << std::endl;
 		for (int id : ald.getAccountIds())
