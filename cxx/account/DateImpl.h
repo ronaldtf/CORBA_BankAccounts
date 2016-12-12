@@ -24,6 +24,7 @@ private:
 	std::string str;
 public:
 	DateImpl();
+	DateImpl(::corbaAccount::date_ptr d);
 	DateImpl(int year, int month, int day);
     ::CORBA::Long day();
     void day(::CORBA::Long _v);

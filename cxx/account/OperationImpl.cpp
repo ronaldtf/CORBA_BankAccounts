@@ -11,6 +11,11 @@ namespace account {
 
 connection::Connection* OperationImpl::_connection = nullptr;
 
+OperationImpl::OperationImpl(corbaAccount::Operation_ptr op) : _type(op->type()), _amount(op->amount()), _operationId(op->operationId()) {
+	_connection = connection::Connection::getInstance();
+	_connection->activateServant(this);
+}
+
 OperationImpl::OperationImpl(corbaAccount::operationType type, const float amount, const int operationId) : _type(type), _amount(amount), _operationId(operationId) {
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);

@@ -20,6 +20,7 @@ private:
 	int _operationId;
 	static connection::Connection* _connection;
 public:
+	OperationImpl(corbaAccount::Operation_ptr op);
 	OperationImpl(corbaAccount::operationType type, const float amount, const int operationId);
     corbaAccount::operationType type();
     void type(::corbaAccount::operationType _v);

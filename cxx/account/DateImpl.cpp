@@ -13,10 +13,9 @@ namespace account {
 
 connection::Connection* DateImpl::_connection = nullptr;
 
-DateImpl::DateImpl() : _year(0), _month(0), _day(0) {
-	_connection = connection::Connection::getInstance();
-	_connection->activateServant(this);
-};
+DateImpl::DateImpl(::corbaAccount::date_ptr d) {
+	DateImpl(d->year(), d->month(), d->day());
+}
 
 DateImpl::DateImpl(int year, int month, int day) : _year(year), _month(month), _day(day) {
 	std::ostringstream os;
@@ -25,6 +24,10 @@ DateImpl::DateImpl(int year, int month, int day) : _year(year), _month(month), _
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 }
+
+DateImpl::DateImpl() {
+	DateImpl(0, 0, 0);
+};
 
 ::CORBA::Long DateImpl::day() {
 	return this->_day;

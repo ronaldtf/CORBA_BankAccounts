@@ -19,8 +19,7 @@ public:
 	DateDelegate(bool publish = true);
 	DateDelegate(corbaAccount::date_ptr d);
 	virtual ~DateDelegate();
-	DateDelegate(int year, int month, int day);
-	DateDelegate(int year, int month, int day, bool publish);
+	DateDelegate(int year, int month, int day, bool publish = true);
 	std::string toString();
 	int getYear();
 	int getMonth();
