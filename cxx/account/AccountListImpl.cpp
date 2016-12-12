@@ -14,50 +14,34 @@ connection::Connection* AccountListImpl::_connection = nullptr;
 AccountListImpl::~AccountListImpl() {
 }
 
-AccountListImpl::AccountListImpl(::corbaAccount::accountListType& a) : _accountList() {
+AccountListImpl::AccountListImpl(const ::corbaAccount::accountListType& a) {
 	accountsList(a);
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 };
 
-AccountListImpl::AccountListImpl() : _accountList(), _al(nullptr) {
+AccountListImpl::AccountListImpl() : _accountList() {
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
+	_accountList.length(0);
 };
 
-AccountListImpl::AccountListImpl(::corbaAccount::AccountList* al) {
-	_al = al;
-	_connection = connection::Connection::getInstance();
-	_connection->activateServant(this);
-}
-
 corbaAccount::accountListType* AccountListImpl::accountsList() {
-	corbaAccount::accountListType* accounts = new corbaAccount::accountListType;
-	accounts->length(_accountList.size());
-	unsigned int pos = 0;
-	for (AccountImpl ac : _accountList) {
-		(*accounts)[pos]->name(ac.name());
-		(*accounts)[pos]->surname(ac.surname());
-		(*accounts)[pos]->dateAccountCreated(ac.dateAccountCreated());
-		(*accounts)[pos]->balance(ac.balance());
-		(*accounts)[pos++]->accountOperations(*ac.accountOperations());
-	}
-	return accounts;
+	corbaAccount::accountListType* acc  = new corbaAccount::accountListType;
+	acc->length(_accountList.length());
+	for (size_t pos = 0; pos < _accountList.length(); ++pos)
+		(*acc)[pos] = _accountList[pos];
+	return acc;
 };
 
 void AccountListImpl::accountsList(const ::corbaAccount::accountListType& _v) {
-	_accountList.clear();
-	size_t len = _v.length();
-	for (size_t pos=0; pos < len; ++pos)
-		_accountList.push_back(AccountImpl(_v[pos]->name(), _v[pos]->surname(), _v[pos]->dateAccountCreated(), _v[pos]->balance(), *_v[pos]->accountOperations()));
+	_accountList = _v;
 };
 
 void AccountListImpl::addAccount(::corbaAccount::Account_ptr ac) {
-	_accountList.push_back(AccountImpl(ac->name(), ac->surname(), ac->dateAccountCreated(), ac->balance(), *ac->accountOperations()));
-
-	if (_al != nullptr) {
-		// TODO: update _al
-	}
+	size_t len = _accountList.length();
+	_accountList.length(len + 1);
+	_accountList[len] = ac;
 };
 
 } /* namespace account */

@@ -43,14 +43,15 @@ std::string AccountDelegate::toString() {
 	return _instance->toString();
 }
 DateDelegate AccountDelegate::getDate() {
-	return DateDelegate(_instance->dateAccountCreated());
+	corbaAccount::date_ptr date = _instance->dateAccountCreated();
+	return DateDelegate(date->year(), date->month(), date->day());
 }
 std::vector<OperationDelegate> AccountDelegate::getOperations() {
 	std::vector<OperationDelegate> operations;
 	corbaAccount::accountOperationsType* ops = _instance->accountOperations();
 	size_t len = ops->length();
 	for (size_t pos=0; pos<len; ++pos) {
-		operations.push_back(OperationDelegate((*ops)[pos]->amount(), utils::Utils::convertType((*ops)[pos]->type()), (*ops)[pos]->operationId()));
+		operations.push_back(OperationDelegate((*ops)[pos]->amount(), utils::Utils::convertType((*ops)[pos]->type()), (*ops)[pos]->operationId(), false));
 	}
 	return operations;
 }

@@ -1,8 +1,9 @@
 package account;
 
-import java.util.Arrays;
 import java.util.Vector;
 
+import account.OperationDelegate;
+import utils.Utils;
 import connection.Connection;
 import corbaAccount.Account;
 import corbaAccount.Operation;
@@ -47,8 +48,12 @@ public class AccountDelegate {
 		return new DateDelegate(d.year(), d.month(), d.day());
 	}
 	
-	public Vector<Operation> getOperations() {
-		return new Vector<Operation>(Arrays.asList(_instance.accountOperations()));
+	public Vector<OperationDelegate> getOperations() throws Exception {
+		Vector<OperationDelegate> v = new Vector<OperationDelegate>();
+		for(Operation op : _instance.accountOperations()) {
+			v.addElement(new OperationDelegate(op.amount(), Utils.convertType(op.type()), op.operationId(), false));
+		}
+		return v;
 	}
 	
 	public void addOperation(OperationDelegate op) {

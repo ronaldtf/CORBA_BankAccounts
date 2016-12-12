@@ -24,13 +24,13 @@ AccountListDelegate::AccountListDelegate(bool publish) {
 	}
 }
 
-AccountListDelegate::AccountListDelegate(::corbaAccount::AccountList* al)  {
-	_instance = new AccountListImpl(al);
-}
-
 AccountListDelegate::~AccountListDelegate() {
 	if (_instance != nullptr)
 		delete _instance;
+}
+
+AccountListDelegate::AccountListDelegate(const ::corbaAccount::accountListType& al)  {
+	_instance = new AccountListImpl(al);
 }
 
 void AccountListDelegate::addAccount(AccountDelegate account) {
@@ -40,11 +40,8 @@ void AccountListDelegate::addAccount(AccountDelegate account) {
 std::vector<corbaAccount::Account_ptr> AccountListDelegate::getAccounts() {
 	std::vector<corbaAccount::Account_ptr> v;
 	corbaAccount::accountListType* ac = _instance->accountsList();
-	for (int i=0; i<ac->length(); ++i) {
-		corbaAccount::Account_ptr account = (*ac)[i];
-		v.push_back(account);
-	}
-
+	for (size_t pos=0; pos<ac->length(); ++pos)
+		v.push_back((*ac)[pos]);
 	return v;
 }
 

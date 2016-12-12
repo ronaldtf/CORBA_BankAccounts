@@ -18,6 +18,7 @@
 #include "../idl/Account.hh"
 #include "../connection/Connection.h"
 #include "OperationImpl.h"
+#include "DateDelegate.h"
 #include "DateImpl.h"
 #include <vector>
 #include <string>
@@ -29,15 +30,16 @@ private:
 	unsigned int _accountId;
 	std::string _name;
 	std::string _surname;
-	DateImpl _dateAccountCreated;
+	DateDelegate* _dateAccountCreated;
 	float _balance;
-	std::vector<OperationImpl> _accountOperations;
+	corbaAccount::accountOperationsType _accountOperations;
 	static connection::Connection* _connection;
 
 public:
+	AccountImpl(corbaAccount::Account_ptr a);
 	AccountImpl(std::string name, std::string surname, corbaAccount::date_ptr dateAccCreated, float balance, corbaAccount::accountOperationsType& accOperations);
-	AccountImpl(std::string name, std::string surname, float balance = 0);
 	AccountImpl(std::string name, std::string surname, float balance, int accountId);
+	AccountImpl(std::string name, std::string surname, int accountId);
     ::CORBA::Long accountId();
     void accountId(::CORBA::Long _v);
     char* name();

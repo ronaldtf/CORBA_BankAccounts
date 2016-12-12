@@ -18,16 +18,14 @@ namespace account {
 class AccountListImpl: public POA_corbaAccount::AccountList {
 private:
 	static connection::Connection* _connection;
-	std::vector<AccountImpl> _accountList;
-	::corbaAccount::AccountList* _al;
+	::corbaAccount::accountListType _accountList;
 
 
 
 public:
 	AccountListImpl();
 	~AccountListImpl();
-	AccountListImpl(::corbaAccount::accountListType& a);
-	AccountListImpl(::corbaAccount::AccountList* al);
+	AccountListImpl(const ::corbaAccount::accountListType& a);
     corbaAccount::accountListType* accountsList();
     void accountsList(const ::corbaAccount::accountListType& _v);
     void addAccount(::corbaAccount::Account_ptr ac);

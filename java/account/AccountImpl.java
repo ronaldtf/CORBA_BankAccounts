@@ -29,6 +29,17 @@ class AccountImpl extends AccountPOA {
 		_connection.activateServant(this);
 	}
 	
+	public AccountImpl(String name, String surname, date dateCreated, float balance, Operation[] accOperations) throws Exception {
+		name(name);
+		surname(surname);
+		dateAccountCreated(dateCreated);
+		balance(balance);
+		accountOperations(accOperations);
+		
+		_connection = Connection.getInstance();
+		_connection.activateServant(this);
+	}
+	
 	public AccountImpl(String name, String surname, float balance, int accountId) throws Exception {
 		super();
 		accountId(accountId);

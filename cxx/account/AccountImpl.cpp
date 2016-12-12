@@ -15,25 +15,18 @@ namespace account {
 
 connection::Connection* AccountImpl::_connection = nullptr;
 
+AccountImpl::AccountImpl(corbaAccount::Account_ptr a) : _accountId(a->accountId()), _name(a->name()), _surname(a->surname()), _balance(a->balance()) {
+	dateAccountCreated(a->dateAccountCreated());
+	accountOperations(*a->accountOperations());
+	_connection = connection::Connection::getInstance();
+	_connection->activateServant(this);
+}
+
 AccountImpl::AccountImpl(std::string name, std::string surname, corbaAccount::date_ptr dateAccCreated, float balance, corbaAccount::accountOperationsType& accOperations) :
 	_name(name), _surname(surname){
 	dateAccountCreated(dateAccCreated);
 	accountOperations(accOperations);
 
-	_connection = connection::Connection::getInstance();
-	_connection->activateServant(this);
-}
-
-
-AccountImpl::AccountImpl(std::string name, std::string surname, float balance) : _name(name), _surname(surname), _balance(balance),
-		_accountOperations() {
-	static unsigned int id;
-	_accountId = ++id;
-
-	std::chrono::system_clock::time_point timepoint = std::chrono::system_clock::now();
-	time_t t = std::chrono::system_clock::to_time_t(timepoint);
-	struct tm* tmp = localtime(&t);
-	_dateAccountCreated = DateImpl(tmp->tm_year, tmp->tm_mon, tmp->tm_mday);
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 }
@@ -45,7 +38,11 @@ AccountImpl::AccountImpl(std::string name, std::string surname, float balance, i
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 
-	_dateAccountCreated = DateImpl();
+	_dateAccountCreated = new DateDelegate();
+}
+
+AccountImpl::AccountImpl(std::string name, std::string surname, int accountId) {
+	AccountImpl(name, surname, 0.0f, accountId);
 }
 
 ::CORBA::Long AccountImpl::accountId() {
@@ -72,15 +69,11 @@ void AccountImpl::surname(const char* _v) {
 }
 
 corbaAccount::date_ptr AccountImpl::dateAccountCreated() {
-	corbaAccount::date_ptr d = corbaAccount::date_ptr();
-	d->year(_dateAccountCreated.year());
-	d->month(_dateAccountCreated.month());
-	d->day(_dateAccountCreated.day());
-	return d;
+	return _dateAccountCreated->getCorbaInstance();
 }
 
 void AccountImpl::dateAccountCreated(::corbaAccount::date_ptr _v) {
-	_dateAccountCreated = DateImpl(_v->year(), _v->month(), _v->day());
+	_dateAccountCreated = new DateDelegate(_v->year(), _v->month(), _v->day());
 }
 
 
@@ -93,21 +86,16 @@ void AccountImpl::balance(::CORBA::Float _v) {
 }
 
 corbaAccount::accountOperationsType* AccountImpl::accountOperations() {
-	corbaAccount::accountOperationsType* ops = new corbaAccount::accountOperationsType;
-	ops->length(_accountOperations.size());
-	unsigned int pos = 0;
-	for (OperationImpl op : _accountOperations) {
-		(*ops)[pos]->type(op.type());
-		(*ops)[pos++]->amount(op.amount());
-	}
-	return ops;
+	return &_accountOperations;
 };
 
 void AccountImpl::accountOperations(const ::corbaAccount::accountOperationsType& _v) {
-	_accountOperations.clear();
-	size_t len = _v.length();
-	for (size_t pos=0; pos<len; ++pos) {
-		_accountOperations.push_back(OperationImpl(_v[pos]->type(), _v[pos]->amount(), _v[pos]->operationId()));
+	_accountOperations = _v;
+	for (size_t pos=0; pos < _accountOperations.length(); ++pos) {
+		if (_accountOperations[pos]->type() == corbaAccount::operationType::WITHDRAW)
+			_balance -= _accountOperations[pos]->amount();
+		else
+			_balance -= _accountOperations[pos]->amount();
 	}
 }
 
@@ -116,13 +104,19 @@ char* AccountImpl::details() {
 };
 
 void AccountImpl::addOperation(::corbaAccount::Operation_ptr op) {
-	_accountOperations.push_back(OperationImpl(op->type(), op->amount(), op->operationId()));
+	size_t pos = _accountOperations.length();
+	_accountOperations.length(pos + 1);
+	_accountOperations[pos] = op;
+	if (op->type() == corbaAccount::operationType::WITHDRAW)
+		_balance -= op->amount();
+	else
+		_balance -= op->amount();
 };
 
 char* AccountImpl::toString() {
 	std::ostringstream os;
 	os << std::setw(2) << std::setfill('0') << "accountId: " << _accountId << ", owner: " << _name << " " << _surname << ", balance: " <<
-			_balance << ", operations: " << _accountOperations.size();
+			_balance << ", operations: " << _accountOperations.length();
 	return const_cast<char*>(os.str().c_str());
 };
 };

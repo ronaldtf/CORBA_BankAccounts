@@ -20,7 +20,7 @@ private:
 	AccountListImpl* _instance;
 public:
 	AccountListDelegate(bool publish = true);
-	AccountListDelegate(::corbaAccount::AccountList* al);
+	AccountListDelegate(const ::corbaAccount::accountListType& al);
 	virtual ~AccountListDelegate();
 	void addAccount(AccountDelegate account);
     std::vector<corbaAccount::Account_ptr> getAccounts();
