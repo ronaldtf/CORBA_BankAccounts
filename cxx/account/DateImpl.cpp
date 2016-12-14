@@ -13,6 +13,10 @@ namespace account {
 
 connection::Connection* DateImpl::_connection = nullptr;
 
+DateImpl::~DateImpl() {
+	_connection->deactivateServant(this);
+}
+
 DateImpl::DateImpl(::corbaAccount::date_ptr d) {
 	DateImpl(d->year(), d->month(), d->day());
 }

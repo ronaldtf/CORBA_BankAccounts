@@ -34,6 +34,7 @@ public:
 	CORBA::Object_ptr getClientObject(std::string componentName, std::string contextName, std::string objectType);
 	void bindObjectToName(CORBA::Object_ptr objref, std::string componentName, std::string contextName, std::string objectType);
 	CORBA::Object_ptr activateServant(PortableServer::ServantBase* obj);
+	void deactivateServant(PortableServer::ServantBase* obj);
 	void runServer();
 };
 };

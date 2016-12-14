@@ -12,6 +12,7 @@ namespace account {
 connection::Connection* AccountListImpl::_connection = nullptr;
 
 AccountListImpl::~AccountListImpl() {
+	_connection->deactivateServant(this);
 }
 
 AccountListImpl::AccountListImpl(const ::corbaAccount::accountListType& a) {

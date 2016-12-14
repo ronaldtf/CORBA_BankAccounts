@@ -22,7 +22,8 @@ private:
 public:
 	OperationImpl(corbaAccount::Operation_ptr op);
 	OperationImpl(corbaAccount::operationType type, const float amount, const int operationId);
-    corbaAccount::operationType type();
+    ~OperationImpl();
+	corbaAccount::operationType type();
     void type(::corbaAccount::operationType _v);
     ::CORBA::Float amount();
     void amount(::CORBA::Float _v);

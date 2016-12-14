@@ -11,6 +11,10 @@ namespace account {
 
 connection::Connection* OperationImpl::_connection = nullptr;
 
+OperationImpl::~OperationImpl() {
+	_connection->deactivateServant(this);
+}
+
 OperationImpl::OperationImpl(corbaAccount::Operation_ptr op) : _type(op->type()), _amount(op->amount()), _operationId(op->operationId()) {
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);

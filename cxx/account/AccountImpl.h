@@ -40,6 +40,7 @@ public:
 	AccountImpl(std::string name, std::string surname, corbaAccount::date_ptr dateAccCreated, float balance, corbaAccount::accountOperationsType& accOperations);
 	AccountImpl(std::string name, std::string surname, float balance, int accountId);
 	AccountImpl(std::string name, std::string surname, int accountId);
+	~AccountImpl();
     ::CORBA::Long accountId();
     void accountId(::CORBA::Long _v);
     char* name();

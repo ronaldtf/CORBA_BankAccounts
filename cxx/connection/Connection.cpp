@@ -167,6 +167,10 @@ CORBA::Object_ptr Connection::activateServant(PortableServer::ServantBase* obj) 
 	return poa->servant_to_reference(obj);
 }
 
+void Connection::deactivateServant(PortableServer::ServantBase* obj) {
+	poa->deactivate_object(*poa->servant_to_id(obj));
+}
+
 void Connection::runServer() {
 	orb->run();
 }

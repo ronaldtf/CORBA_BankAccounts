@@ -15,6 +15,10 @@ namespace account {
 
 connection::Connection* AccountImpl::_connection = nullptr;
 
+AccountImpl::~AccountImpl() {
+	_connection->deactivateServant(this);
+}
+
 AccountImpl::AccountImpl(corbaAccount::Account_ptr a) : _accountId(a->accountId()), _name(a->name()), _surname(a->surname()), _balance(a->balance()) {
 	dateAccountCreated(a->dateAccountCreated());
 	accountOperations(*a->accountOperations());
