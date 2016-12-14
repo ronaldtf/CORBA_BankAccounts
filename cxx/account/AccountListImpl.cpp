@@ -28,11 +28,7 @@ AccountListImpl::AccountListImpl() : _accountList() {
 };
 
 corbaAccount::accountListType* AccountListImpl::accountsList() {
-	corbaAccount::accountListType* acc  = new corbaAccount::accountListType;
-	acc->length(_accountList.length());
-	for (size_t pos = 0; pos < _accountList.length(); ++pos)
-		(*acc)[pos] = _accountList[pos];
-	return acc;
+	return &_accountList;
 };
 
 void AccountListImpl::accountsList(const ::corbaAccount::accountListType& _v) {

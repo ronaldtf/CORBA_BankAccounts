@@ -41,8 +41,9 @@ int main() {
 		assert (ald2.getAccounts().at(0)->balance() == 750.0);
 
 		std::cout << "Account ids:" << std::endl;
-		for (int id : ald.getAccountIds())
+		for (int id : ald.getAccountIds()) {
 			std::cout << "** accId: " << id << std::endl;
+		}
 
 	} catch (std::exception& e) {
 		std::cerr << "An error has occurred " << e.what() << std::endl;

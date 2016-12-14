@@ -22,7 +22,7 @@ public:
 	AccountListDelegate(bool publish = true);
 	AccountListDelegate(const ::corbaAccount::accountListType& al);
 	virtual ~AccountListDelegate();
-	void addAccount(AccountDelegate account);
+	void addAccount(AccountDelegate& account);
     std::vector<corbaAccount::Account_ptr> getAccounts();
     corbaAccount::AccountList_ptr getCorbaInstance();
     std::vector<int> getAccountIds();

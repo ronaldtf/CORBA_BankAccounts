@@ -32,7 +32,7 @@ AccountListDelegate::AccountListDelegate(const ::corbaAccount::accountListType& 
 	_instance = new AccountListImpl(al);
 }
 
-void AccountListDelegate::addAccount(AccountDelegate account) {
+void AccountListDelegate::addAccount(AccountDelegate& account) {
 	_instance->addAccount(account.getCorbaInstance());
 }
 

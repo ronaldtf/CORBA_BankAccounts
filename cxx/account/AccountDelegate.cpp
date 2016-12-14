@@ -10,8 +10,7 @@
 
 namespace account {
 
-
-AccountDelegate::AccountDelegate(std::string name, std::string surname, int accountId, bool publish){
+AccountDelegate::AccountDelegate(std::string name, std::string surname, int accountId, bool publish) {
 	_instance = new AccountImpl(name, surname, accountId);
 	if (publish)
 		connection::Connection::getInstance()->bindObjectToName(_instance->_this(), "myContext", "Account" + std::to_string(_instance->accountId()), "Account");
