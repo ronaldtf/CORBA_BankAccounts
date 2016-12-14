@@ -23,8 +23,7 @@ private:
 	AccountImpl* _instance;
 
 public:
-	AccountDelegate(std::string name, std::string surname, int accountId);
-	AccountDelegate(std::string name, std::string surname, int accountId, bool publish);
+	AccountDelegate(std::string name, std::string surname, int accountId, bool publish = true);
 	AccountDelegate(std::string name, std::string surname, float balance, int accountId);
 	~AccountDelegate();
 	int getAccountId();
