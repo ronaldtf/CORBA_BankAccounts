@@ -10,9 +10,6 @@
 
 namespace account {
 
-AccountDelegate::AccountDelegate(std::string name, std::string surname, int accountId) {
-	AccountDelegate(name, surname, accountId, true);
-}
 
 AccountDelegate::AccountDelegate(std::string name, std::string surname, int accountId, bool publish){
 	_instance = new AccountImpl(name, surname, accountId);
