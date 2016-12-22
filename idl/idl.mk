@@ -1,6 +1,6 @@
 .PHONY:	idl
 idl:
-	/usr/local/bin/omniidl -bcxx Account.idl
+	omniidl -bcxx Account.idl
 	idlj -fall Account.idl
 cxx:
 	g++ -c AccountSK.cc
