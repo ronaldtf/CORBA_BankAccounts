@@ -9,7 +9,7 @@
 #define ACCOUNTDELEGATE_H_
 
 #include "AccountImpl.h"
-#include "../idl/Account.hh"
+#include "../../idl/Account.hh"
 #include "DateDelegate.h"
 #include "OperationDelegate.h"
 

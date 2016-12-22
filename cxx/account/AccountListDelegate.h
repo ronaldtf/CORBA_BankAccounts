@@ -9,7 +9,7 @@
 #define ACCOUNTLISTDELEGATE_H_
 
 #include "AccountListImpl.h"
-#include "../idl/Account.hh"
+#include "../../idl/Account.hh"
 #include <vector>
 #include "AccountDelegate.h"
 

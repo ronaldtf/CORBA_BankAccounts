@@ -8,7 +8,7 @@
 #include "AccountListDelegate.h"
 #include "../connection/Connection.h"
 #include <iostream>
-#include "../idl/Account.hh"
+#include "../../idl/Account.hh"
 
 namespace account {
 
