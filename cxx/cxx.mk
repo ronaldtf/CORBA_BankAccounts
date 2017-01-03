@@ -1,4 +1,4 @@
-FLAGS = -lomnithread -lomniORB4 -std=c++11 -g
+FLAGS = -lomnithread -lomniORB4 -std=c++11
 IDL = ../idl/*.o
 build:
 	g++ -std=c++11 -o utils/Utils.o -c utils/Utils.cpp
