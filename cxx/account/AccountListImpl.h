@@ -20,8 +20,6 @@ private:
 	static connection::Connection* _connection;
 	::corbaAccount::accountListType _accountList;
 
-
-
 public:
 	AccountListImpl();
 	~AccountListImpl();
