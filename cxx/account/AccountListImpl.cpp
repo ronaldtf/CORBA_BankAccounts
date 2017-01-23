@@ -6,6 +6,7 @@
  */
 
 #include "AccountListImpl.h"
+#include <iostream>
 
 namespace account {
 
@@ -15,8 +16,8 @@ AccountListImpl::~AccountListImpl() {
 	_connection->deactivateServant(this);
 }
 
-AccountListImpl::AccountListImpl(const ::corbaAccount::accountListType& a) {
-	accountsList(a);
+AccountListImpl::AccountListImpl(const ::corbaAccount::accountListType* a) {
+	accountsList(*a);
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 };
@@ -38,6 +39,7 @@ void AccountListImpl::accountsList(const ::corbaAccount::accountListType& _v) {
 void AccountListImpl::addAccount(::corbaAccount::Account_ptr ac) {
 	size_t len = _accountList.length();
 	_accountList.length(len + 1);
+	std::cout << len << std::endl;
 	_accountList[len] = ac;
 };
 

@@ -18,7 +18,8 @@ OperationDelegate::OperationDelegate(float amount, utils::Utils::OperationType t
 }
 
 OperationDelegate::~OperationDelegate() {
-	delete _instance;
+	if (_instance != nullptr)
+		delete _instance;
 }
 
 float OperationDelegate::getAmount() {

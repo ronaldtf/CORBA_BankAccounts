@@ -25,10 +25,11 @@ AccountListDelegate::AccountListDelegate(bool publish) {
 }
 
 AccountListDelegate::~AccountListDelegate() {
-	delete _instance;
+	if (_instance != nullptr)
+		delete _instance;
 }
 
-AccountListDelegate::AccountListDelegate(const ::corbaAccount::accountListType& al)  {
+AccountListDelegate::AccountListDelegate(const ::corbaAccount::accountListType* al)  {
 	_instance = new AccountListImpl(al);
 }
 

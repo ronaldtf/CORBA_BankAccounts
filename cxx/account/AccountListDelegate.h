@@ -17,10 +17,10 @@ namespace account {
 
 class AccountListDelegate {
 private:
-	AccountListImpl* _instance;
+	AccountListImpl* _instance = nullptr;
 public:
 	AccountListDelegate(bool publish = true);
-	AccountListDelegate(const ::corbaAccount::accountListType& al);
+	AccountListDelegate(const ::corbaAccount::accountListType* al);
 	virtual ~AccountListDelegate();
 	void addAccount(AccountDelegate& account);
     std::vector<corbaAccount::Account_ptr> getAccounts();

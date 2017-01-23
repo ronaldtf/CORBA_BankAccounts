@@ -21,7 +21,8 @@ AccountDelegate::AccountDelegate(std::string name, std::string surname, float ba
 }
 
 AccountDelegate::~AccountDelegate() {
-	delete _instance;
+	if (_instance != nullptr)
+		delete _instance;
 }
 
 int AccountDelegate::getAccountId() {

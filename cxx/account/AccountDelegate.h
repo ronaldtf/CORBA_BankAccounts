@@ -20,7 +20,7 @@ namespace account {
 
 class AccountDelegate {
 private:
-	AccountImpl* _instance;
+	AccountImpl* _instance = nullptr;
 
 public:
 	AccountDelegate(std::string name, std::string surname, int accountId, bool publish = true);

@@ -27,7 +27,7 @@ AccountImpl::AccountImpl(corbaAccount::Account_ptr a) : _accountId(a->accountId(
 }
 
 AccountImpl::AccountImpl(std::string name, std::string surname, corbaAccount::date_ptr dateAccCreated, float balance, corbaAccount::accountOperationsType& accOperations) :
-	_name(name), _surname(surname){
+	_name(name), _surname(surname), _balance(balance){
 	dateAccountCreated(dateAccCreated);
 	accountOperations(accOperations);
 
@@ -45,8 +45,7 @@ AccountImpl::AccountImpl(std::string name, std::string surname, float balance, i
 	_dateAccountCreated = new DateDelegate();
 }
 
-AccountImpl::AccountImpl(std::string name, std::string surname, int accountId) {
-	AccountImpl(name, surname, 0.0f, accountId);
+AccountImpl::AccountImpl(std::string name, std::string surname, int accountId) : _name(name), _surname(surname), _balance(0.0f), _accountId(accountId) {
 }
 
 ::CORBA::Long AccountImpl::accountId() {
@@ -114,7 +113,7 @@ void AccountImpl::addOperation(::corbaAccount::Operation_ptr op) {
 	if (op->type() == corbaAccount::operationType::WITHDRAW)
 		_balance -= op->amount();
 	else
-		_balance -= op->amount();
+		_balance += op->amount();
 };
 
 char* AccountImpl::toString() {

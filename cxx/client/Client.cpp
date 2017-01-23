@@ -15,9 +15,15 @@
 int main() {
 	try {
 		CORBA::Object_ptr objAccountList = connection::Connection::getInstance()->getClientObject("myContext", "AccountList", "AccountList");
-		corbaAccount::AccountList_ptr list = corbaAccount::AccountList::_narrow(objAccountList);
+		corbaAccount::AccountList_var list = corbaAccount::AccountList::_narrow(objAccountList);
+		if (CORBA::is_nil(list)) {
+			std::cerr << "Cannot narrow reference." << std::endl;
+			return 1;
+		}
 
-		account::AccountListDelegate ald = new account::AccountListDelegate(list);
+		corbaAccount::accountListType* l = list->accountsList();
+
+		account::AccountListDelegate ald = new account::AccountListDelegate(l);
 		account::AccountDelegate ad1 = account::AccountDelegate("MainName1", "Main Surname1", 1);
 		account::AccountDelegate ad2 = account::AccountDelegate("MainName2", "Main Surname2", 2);
 
@@ -33,7 +39,10 @@ int main() {
 		ad1.addOperation(op1);
 		ad1.addOperation(op2);
 
-		account::AccountListDelegate ald2 = account::AccountListDelegate(list);
+		// Get the recent list
+		l = ald.getCorbaInstance()->accountsList();
+
+		account::AccountListDelegate ald2 = account::AccountListDelegate(l);
 		std::cout << "Verify that the behavior is the expected: " << ald2.getAccounts().size()  << " == 2" << std::endl;
 		assert (ald2.getAccounts().size() == 2);
 

@@ -23,7 +23,7 @@ private:
 public:
 	AccountListImpl();
 	~AccountListImpl();
-	AccountListImpl(const ::corbaAccount::accountListType& a);
+	AccountListImpl(const ::corbaAccount::accountListType* a);
     corbaAccount::accountListType* accountsList();
     void accountsList(const ::corbaAccount::accountListType& _v);
     void addAccount(::corbaAccount::Account_ptr ac);

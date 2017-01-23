@@ -23,7 +23,8 @@ DateDelegate::DateDelegate(bool publish) {
 }
 
 DateDelegate::~DateDelegate() {
-	delete _instance;
+	if (_instance != nullptr)
+		delete _instance;
 }
 
 DateDelegate::DateDelegate(corbaAccount::date_ptr d) {

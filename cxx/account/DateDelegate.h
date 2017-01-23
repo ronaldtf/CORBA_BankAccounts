@@ -14,7 +14,7 @@ namespace account {
 
 class DateDelegate {
 private:
-	DateImpl* _instance;
+	DateImpl* _instance = nullptr;
 public:
 	DateDelegate(bool publish = true);
 	DateDelegate(corbaAccount::date_ptr d);
