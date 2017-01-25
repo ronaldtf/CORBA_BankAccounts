@@ -12,25 +12,27 @@
 #include <omniORB4/poa.h>
 #include <string>
 #include <map>
+#include <memory>
 
 namespace connection {
 class Connection {
 private:
-	static Connection* _instance;
+	static std::shared_ptr<Connection> _instance;
 	static const std::string CONF_NAME;
 	static bool isReferenced;
-	PortableServer::POA_var poa;
 
 	CORBA::ORB_ptr orb;
+	PortableServer::POA_var poa;
+
 	std::map<std::string, std::string> properties;
 
 	Connection();
-	~Connection();
 	void init();
 	void referenceObject();
 
 public:
-	static Connection* getInstance();
+	static std::shared_ptr<Connection> getInstance();
+	void close();
 	CORBA::Object_ptr getClientObject(std::string componentName, std::string contextName, std::string objectType);
 	void bindObjectToName(CORBA::Object_ptr objref, std::string componentName, std::string contextName, std::string objectType);
 	CORBA::Object_ptr activateServant(PortableServer::ServantBase* obj);

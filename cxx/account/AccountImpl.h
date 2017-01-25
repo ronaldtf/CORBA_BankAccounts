@@ -22,6 +22,7 @@
 #include "DateImpl.h"
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace account {
 
@@ -33,13 +34,13 @@ private:
 	DateDelegate* _dateAccountCreated;
 	float _balance;
 	corbaAccount::accountOperationsType _accountOperations;
-	static connection::Connection* _connection;
+	static std::shared_ptr<connection::Connection> _connection;
 
 public:
 	AccountImpl(corbaAccount::Account_ptr a);
-	AccountImpl(std::string name, std::string surname, corbaAccount::date_ptr dateAccCreated, float balance, corbaAccount::accountOperationsType& accOperations);
-	AccountImpl(std::string name, std::string surname, float balance, int accountId);
-	AccountImpl(std::string name, std::string surname, int accountId);
+	AccountImpl(std::string name, std::string surname, corbaAccount::date_ptr dateAccCreated, float balance, corbaAccount::accountOperationsType& accOperations, unsigned int accountId);
+	AccountImpl(std::string name, std::string surname, float balance, unsigned int accountId);
+	AccountImpl(std::string name, std::string surname, unsigned int accountId);
 	~AccountImpl();
     ::CORBA::Long accountId();
     void accountId(::CORBA::Long _v);

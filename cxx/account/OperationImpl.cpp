@@ -9,7 +9,7 @@
 
 namespace account {
 
-connection::Connection* OperationImpl::_connection = nullptr;
+std::shared_ptr<connection::Connection> OperationImpl::_connection = nullptr;
 
 OperationImpl::~OperationImpl() {
 	_connection->deactivateServant(this);

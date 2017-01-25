@@ -19,7 +19,7 @@ private:
 	int _year;
 	int _month;
 	int _day;
-	static connection::Connection* _connection;
+	static std::shared_ptr<connection::Connection> _connection;
 private:
 	std::string str;
 public:

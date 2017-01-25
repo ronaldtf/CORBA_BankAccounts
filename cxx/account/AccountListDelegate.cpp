@@ -13,7 +13,7 @@
 namespace account {
 
 AccountListDelegate::AccountListDelegate(bool publish) {
-	_instance = new AccountListImpl;
+	_instance = std::unique_ptr<AccountListImpl>(new AccountListImpl);
 	if (publish) {
 		try {
 			connection::Connection::getInstance()->bindObjectToName(_instance->_this(), "myContext", "AccountList", "AccountList");
@@ -24,20 +24,27 @@ AccountListDelegate::AccountListDelegate(bool publish) {
 	}
 }
 
+AccountListDelegate::AccountListDelegate(const AccountListDelegate& ald) {
+	_instance = std::unique_ptr<AccountListImpl>(new AccountListImpl());
+	if (ald._instance != nullptr) {
+		corbaAccount::accountListType* l =  ald._instance->accountsList();
+		for (int i=0; i<l->length(); ++i)
+			_instance->addAccount((*l)[i]);
+	}
+}
+
 AccountListDelegate::~AccountListDelegate() {
-	if (_instance != nullptr)
-		delete _instance;
 }
 
 AccountListDelegate::AccountListDelegate(const ::corbaAccount::accountListType* al)  {
-	_instance = new AccountListImpl(al);
+	_instance = std::unique_ptr<AccountListImpl>(new AccountListImpl(al));
 }
 
 void AccountListDelegate::addAccount(AccountDelegate& account) {
 	_instance->addAccount(account.getCorbaInstance());
 }
 
-std::vector<corbaAccount::Account_ptr> AccountListDelegate::getAccounts() {
+std::vector<corbaAccount::Account_ptr> AccountListDelegate::getAccounts() const {
 	std::vector<corbaAccount::Account_ptr> v;
 	corbaAccount::accountListType* ac = _instance->accountsList();
 	for (size_t pos=0; pos<ac->length(); ++pos)
@@ -45,11 +52,11 @@ std::vector<corbaAccount::Account_ptr> AccountListDelegate::getAccounts() {
 	return v;
 }
 
-corbaAccount::AccountList_ptr AccountListDelegate::getCorbaInstance() {
+corbaAccount::AccountList_ptr AccountListDelegate::getCorbaInstance() const {
 	return _instance->_this();
 }
 
-std::vector<int> AccountListDelegate::getAccountIds() {
+std::vector<int> AccountListDelegate::getAccountIds() const {
 	std::vector<int> v;
 	corbaAccount::accountListType* ac = _instance->accountsList();
 	for (int i=0; i<ac->length(); ++i){

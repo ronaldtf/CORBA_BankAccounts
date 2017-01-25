@@ -18,7 +18,7 @@
 
 namespace connection {
 
-Connection* Connection::_instance = nullptr;
+std::shared_ptr<Connection> Connection::_instance = nullptr;
 const std::string Connection::CONF_NAME = "conf/server.cfg";
 bool Connection::isReferenced = false;
 
@@ -26,10 +26,14 @@ Connection::Connection() : orb(nullptr), poa(nullptr), properties() {
 	init();
 }
 
-Connection::~Connection() {
-	if (_instance != nullptr)
-		delete _instance;
+void Connection::close() {
+	if (orb != NULL) {
+		try {
+			orb->destroy();
+		} catch (...) {}
+	}
 }
+
 
 void Connection::init() {
 	std::map<std::string, std::string> properties = std::map<std::string, std::string>();
@@ -65,9 +69,9 @@ void Connection::referenceObject() {
 	}
 }
 
-Connection* Connection::getInstance() {
+std::shared_ptr<Connection> Connection::getInstance() {
 	if (_instance == nullptr)
-		_instance = new Connection();
+		_instance = std::shared_ptr<Connection>(new Connection());
 	return _instance;
 }
 

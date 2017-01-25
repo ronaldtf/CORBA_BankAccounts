@@ -21,9 +21,9 @@ int main() {
 			return 1;
 		}
 
-		corbaAccount::accountListType* l = list->accountsList();
+		corbaAccount::accountListType* accountList = list->accountsList();
 
-		account::AccountListDelegate ald = new account::AccountListDelegate(l);
+		account::AccountListDelegate ald = new account::AccountListDelegate(accountList);
 		account::AccountDelegate ad1 = account::AccountDelegate("MainName1", "Main Surname1", 1);
 		account::AccountDelegate ad2 = account::AccountDelegate("MainName2", "Main Surname2", 2);
 
@@ -40,9 +40,9 @@ int main() {
 		ad1.addOperation(op2);
 
 		// Get the recent list
-		l = ald.getCorbaInstance()->accountsList();
+		accountList = ald.getCorbaInstance()->accountsList();
 
-		account::AccountListDelegate ald2 = account::AccountListDelegate(l);
+		account::AccountListDelegate ald2 = account::AccountListDelegate(accountList);
 		std::cout << "Verify that the behavior is the expected: " << ald2.getAccounts().size()  << " == 2" << std::endl;
 		assert (ald2.getAccounts().size() == 2);
 
@@ -58,6 +58,8 @@ int main() {
 		std::cerr << "An error has occurred " << e.what() << std::endl;
 	} catch (::CORBA::TRANSIENT& e) {
 		std::cerr << "A transient exception has occurred: " << e.NP_minorString() << std::endl;
+	} catch (::CORBA::COMM_FAILURE& e) {
+		std::cerr << "A comm failure has occurred: " << e.NP_minorString() << std::endl;
 	}
 }
 

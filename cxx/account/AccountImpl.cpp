@@ -13,7 +13,7 @@
 
 namespace account {
 
-connection::Connection* AccountImpl::_connection = nullptr;
+std::shared_ptr<connection::Connection> AccountImpl::_connection = nullptr;
 
 AccountImpl::~AccountImpl() {
 	_connection->deactivateServant(this);
@@ -26,8 +26,8 @@ AccountImpl::AccountImpl(corbaAccount::Account_ptr a) : _accountId(a->accountId(
 	_connection->activateServant(this);
 }
 
-AccountImpl::AccountImpl(std::string name, std::string surname, corbaAccount::date_ptr dateAccCreated, float balance, corbaAccount::accountOperationsType& accOperations) :
-	_name(name), _surname(surname), _balance(balance){
+AccountImpl::AccountImpl(std::string name, std::string surname, corbaAccount::date_ptr dateAccCreated, float balance, corbaAccount::accountOperationsType& accOperations, unsigned int accountId) :
+	_accountId(accountId), _name(name), _surname(surname), _balance(balance){
 	dateAccountCreated(dateAccCreated);
 	accountOperations(accOperations);
 
@@ -36,7 +36,7 @@ AccountImpl::AccountImpl(std::string name, std::string surname, corbaAccount::da
 }
 
 
-AccountImpl::AccountImpl(std::string name, std::string surname, float balance, int accountId) : _accountId(accountId), _name(name), _surname(surname),
+AccountImpl::AccountImpl(std::string name, std::string surname, float balance, unsigned int accountId) : _accountId(accountId), _name(name), _surname(surname),
 		_balance(balance), _accountOperations(){
 
 	_connection = connection::Connection::getInstance();
@@ -45,7 +45,8 @@ AccountImpl::AccountImpl(std::string name, std::string surname, float balance, i
 	_dateAccountCreated = new DateDelegate();
 }
 
-AccountImpl::AccountImpl(std::string name, std::string surname, int accountId) : _name(name), _surname(surname), _balance(0.0f), _accountId(accountId) {
+AccountImpl::AccountImpl(std::string name, std::string surname, unsigned int accountId) : _accountId(accountId), _name(name), _surname(surname), _balance(0.0f) {
+	_connection = connection::Connection::getInstance();
 }
 
 ::CORBA::Long AccountImpl::accountId() {
@@ -56,19 +57,19 @@ void AccountImpl::accountId(::CORBA::Long _v) {
 	_accountId = _v;
 }
 char* AccountImpl::name() {
-	return const_cast<char*>(_name.c_str());
+	return CORBA::string_dup(_name.c_str());
 }
 
 void AccountImpl::name(const char* _v) {
-	_name = std::string(_v);
+	_name = CORBA::string_dup(_v);
 }
 
 char* AccountImpl::surname() {
-	return const_cast<char*>(_surname.c_str());
+	return CORBA::string_dup(_surname.c_str());
 }
 
 void AccountImpl::surname(const char* _v) {
-	_surname = std::string(_v);
+	_surname = CORBA::string_dup(_v);
 }
 
 corbaAccount::date_ptr AccountImpl::dateAccountCreated() {
@@ -103,7 +104,7 @@ void AccountImpl::accountOperations(const ::corbaAccount::accountOperationsType&
 }
 
 char* AccountImpl::details() {
-	return const_cast<char*>((_name + " " + _surname).c_str());
+	return CORBA::string_dup((_name + " " + _surname).c_str());
 };
 
 void AccountImpl::addOperation(::corbaAccount::Operation_ptr op) {
@@ -120,7 +121,7 @@ char* AccountImpl::toString() {
 	std::ostringstream os;
 	os << std::setw(2) << std::setfill('0') << "accountId: " << _accountId << ", owner: " << _name << " " << _surname << ", balance: " <<
 			_balance << ", operations: " << _accountOperations.length();
-	return const_cast<char*>(os.str().c_str());
+	return CORBA::string_dup(os.str().c_str());
 };
 };
 

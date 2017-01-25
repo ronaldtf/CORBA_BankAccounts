@@ -16,13 +16,14 @@ namespace account {
 
 class OperationDelegate {
 private:
-	OperationImpl* _instance = nullptr;
+	std::unique_ptr<OperationImpl> _instance;
 public:
 	OperationDelegate();
+	OperationDelegate(const OperationDelegate& od);
 	OperationDelegate(float amount, utils::Utils::OperationType type, int operationId, bool publish=true);
-	float getAmount();
-	utils::Utils::OperationType getType();
-	corbaAccount::Operation_ptr getCorbaInstance();
+	float getAmount() const;
+	utils::Utils::OperationType getType() const;
+	corbaAccount::Operation_ptr getCorbaInstance() const;
 	virtual ~OperationDelegate();
 };
 

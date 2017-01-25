@@ -12,12 +12,13 @@
 #include "../connection/Connection.h"
 #include "AccountImpl.h"
 #include <vector>
+#include <memory>
 
 namespace account {
 
 class AccountListImpl: public POA_corbaAccount::AccountList {
 private:
-	static connection::Connection* _connection;
+	static std::shared_ptr<connection::Connection> _connection;
 	::corbaAccount::accountListType _accountList;
 
 public:

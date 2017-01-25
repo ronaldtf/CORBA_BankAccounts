@@ -18,7 +18,7 @@ private:
 	corbaAccount::operationType _type;
 	float _amount;
 	int _operationId;
-	static connection::Connection* _connection;
+	static std::shared_ptr<connection::Connection> _connection;
 public:
 	OperationImpl(corbaAccount::Operation_ptr op);
 	OperationImpl(corbaAccount::operationType type, const float amount, const int operationId);

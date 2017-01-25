@@ -14,17 +14,18 @@ namespace account {
 
 class DateDelegate {
 private:
-	DateImpl* _instance = nullptr;
+	std::unique_ptr<DateImpl> _instance;
 public:
 	DateDelegate(bool publish = true);
+	DateDelegate(const DateDelegate& dd);
 	DateDelegate(corbaAccount::date_ptr d);
 	virtual ~DateDelegate();
-	DateDelegate(int year, int month, int day, bool publish = true);
-	std::string toString();
-	int getYear();
-	int getMonth();
-	int getDay();
-	corbaAccount::date_ptr getCorbaInstance();
+	DateDelegate(const int year, const int month, const int day, bool publish = true);
+	std::string toString() const;
+	int getYear() const;
+	int getMonth() const;
+	int getDay() const;
+	corbaAccount::date_ptr getCorbaInstance() const;
 };
 
 } /* namespace account */

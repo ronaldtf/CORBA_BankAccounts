@@ -11,7 +11,7 @@
 
 namespace account {
 
-connection::Connection* DateImpl::_connection = nullptr;
+std::shared_ptr<connection::Connection> DateImpl::_connection = nullptr;
 
 DateImpl::~DateImpl() {
 	_connection->deactivateServant(this);
@@ -53,7 +53,7 @@ void DateImpl::year(::CORBA::Long _v) {
 }
 
 char* DateImpl::toString() {
-	return const_cast<char*>(str.c_str());
+	return CORBA::string_dup(str.c_str());
 };
 
 } /* namespace account */
