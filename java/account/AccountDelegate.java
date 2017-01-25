@@ -8,12 +8,13 @@ package account;
 
 import java.util.Vector;
 
-import account.OperationDelegate;
-import utils.Utils;
-import connection.Connection;
 import corbaAccount.Account;
-import corbaAccount.Operation;
 import corbaAccount.date;
+import corbaAccount.Operation;
+
+import account.OperationDelegate;
+import connection.Connection;
+import utils.Utils;
 
 /**
  * This class implements the delegate for the user bank account

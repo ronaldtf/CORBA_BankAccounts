@@ -7,6 +7,7 @@
 
 #include "../account/AccountListDelegate.h"
 #include "../connection/Connection.h"
+
 #include <iostream>
 #include <memory>
 

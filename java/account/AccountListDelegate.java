@@ -4,9 +4,10 @@ import java.nio.channels.AlreadyBoundException;
 import java.util.Arrays;
 import java.util.Vector;
 
-import connection.Connection;
 import corbaAccount.Account;
 import corbaAccount.AccountList;
+
+import connection.Connection;
 
 public class AccountListDelegate {
 

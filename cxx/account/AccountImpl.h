@@ -17,12 +17,14 @@
 
 #include "../../idl/Account.hh"
 #include "../connection/Connection.h"
-#include "OperationImpl.h"
+
 #include "DateDelegate.h"
 #include "DateImpl.h"
-#include <vector>
-#include <string>
+#include "OperationImpl.h"
+
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace account {
 

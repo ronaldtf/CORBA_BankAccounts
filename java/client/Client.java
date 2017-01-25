@@ -2,13 +2,14 @@ package client;
 
 import org.omg.CORBA.Object;
 
+import corbaAccount.AccountList;
+import corbaAccount.AccountListHelper;
+
 import account.AccountDelegate;
 import account.AccountListDelegate;
 import account.OperationDelegate;
 import account.OperationDelegate.OperationType;
 import connection.Connection;
-import corbaAccount.AccountList;
-import corbaAccount.AccountListHelper;
 
 /*
  * In this class I implement an example of how to handle accounts from the client side.

@@ -1,11 +1,12 @@
 package account;
 
-import connection.Connection;
 import corbaAccount.Account;
 import corbaAccount.AccountPOA;
 import corbaAccount.Operation;
 import corbaAccount.date;
 import corbaAccount.operationType;
+
+import connection.Connection;
 
 class AccountImpl extends AccountPOA {
 

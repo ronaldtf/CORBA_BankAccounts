@@ -8,8 +8,9 @@
 #ifndef ACCOUNTDELEGATE_H_
 #define ACCOUNTDELEGATE_H_
 
-#include "AccountImpl.h"
 #include "../../idl/Account.hh"
+
+#include "AccountImpl.h"
 #include "DateDelegate.h"
 #include "OperationDelegate.h"
 

@@ -5,10 +5,12 @@
  * \version 1.0
  */
 
-#include "AccountListDelegate.h"
-#include "../connection/Connection.h"
-#include <iostream>
 #include "../../idl/Account.hh"
+#include "../connection/Connection.h"
+
+#include "AccountListDelegate.h"
+
+#include <iostream>
 
 namespace account {
 

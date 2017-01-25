@@ -1,7 +1,8 @@
 package account;
 
-import connection.Connection;
 import corbaAccount.Operation;
+
+import connection.Connection;
 import utils.Utils;
 
 public class OperationDelegate {

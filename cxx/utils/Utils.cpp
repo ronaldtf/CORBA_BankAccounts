@@ -73,6 +73,11 @@ Utils::OperationType Utils::convertType(corbaAccount::operationType opType) {
 	}
 }
 
+std::string Utils::convertDate(const time_t& date) {
+	std::tm * ptm = std::localtime(&date);
+	char buffer[32];
+	std::strftime(buffer, 32, "%a, %d.%m.%Y %H:%M:%S", ptm);
+	return std::string(buffer);
 }
 
-
+}

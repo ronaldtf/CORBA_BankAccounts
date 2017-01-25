@@ -12,9 +12,11 @@
  * \version 1.0
  */
 
-#include <iostream>
-#include "Connection.h"
 #include "../utils/Utils.h"
+
+#include "Connection.h"
+
+#include <iostream>
 
 namespace connection {
 

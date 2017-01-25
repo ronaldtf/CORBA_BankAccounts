@@ -5,8 +5,9 @@
  * \version 1.0
  */
 
-#include "AccountDelegate.h"
 #include "../connection/Connection.h"
+
+#include "AccountDelegate.h"
 
 namespace account {
 

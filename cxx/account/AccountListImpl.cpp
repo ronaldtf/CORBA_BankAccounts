@@ -6,6 +6,7 @@
  */
 
 #include "AccountListImpl.h"
+
 namespace account {
 
 std::shared_ptr<connection::Connection> AccountListImpl::_connection = nullptr;

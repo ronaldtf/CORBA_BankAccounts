@@ -1,11 +1,10 @@
 package account;
 
-import connection.Connection;
 import corbaAccount.Account;
 import corbaAccount.AccountList;
 import corbaAccount.AccountListPOA;
 
-// Skip vector. Use the list from the superclass instead.
+import connection.Connection;
 
 public class AccountListImpl extends AccountListPOA {
 

@@ -5,9 +5,11 @@
  * \version 1.0
  */
 
+#include "../../idl/Account.hh"
+
+#include <ctime>
 #include <map>
 #include <vector>
-#include "../../idl/Account.hh"
 
 namespace utils {
 	class Utils {
@@ -24,6 +26,8 @@ namespace utils {
 		static corbaAccount::operationType convertType(OperationType opType);
 
 		static Utils::OperationType convertType(corbaAccount::operationType opType);
+
+		static std::string convertDate(const time_t& date);
 
 	};
 }

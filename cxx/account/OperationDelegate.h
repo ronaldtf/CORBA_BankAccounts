@@ -8,9 +8,10 @@
 #ifndef OPERATIONDELEGATE_H_
 #define OPERATIONDELEGATE_H_
 
-#include "OperationImpl.h"
-#include "../utils/Utils.h"
 #include "../../idl/Account.hh"
+#include "../utils/Utils.h"
+
+#include "OperationImpl.h"
 
 namespace account {
 

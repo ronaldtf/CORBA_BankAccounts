@@ -10,9 +10,11 @@
 
 #include "../../idl/Account.hh"
 #include "../connection/Connection.h"
+
 #include "AccountImpl.h"
-#include <vector>
+
 #include <memory>
+#include <vector>
 
 namespace account {
 

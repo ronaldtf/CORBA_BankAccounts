@@ -1,9 +1,10 @@
 package account;
 
-import connection.Connection;
 import corbaAccount.Operation;
 import corbaAccount.OperationPOA;
 import corbaAccount.operationType;
+
+import connection.Connection;
 
 public class OperationImpl extends OperationPOA {
 	

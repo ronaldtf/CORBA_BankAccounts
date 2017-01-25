@@ -8,11 +8,13 @@
 #ifndef ACCOUNTLISTDELEGATE_H_
 #define ACCOUNTLISTDELEGATE_H_
 
-#include "AccountListImpl.h"
 #include "../../idl/Account.hh"
-#include <vector>
-#include <memory>
+
 #include "AccountDelegate.h"
+#include "AccountListImpl.h"
+
+#include <memory>
+#include <vector>
 
 namespace account {
 

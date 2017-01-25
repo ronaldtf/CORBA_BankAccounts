@@ -10,8 +10,9 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import account.OperationDelegate.OperationType;
 import corbaAccount.operationType;
+
+import account.OperationDelegate.OperationType;
 
 public class Utils {
 

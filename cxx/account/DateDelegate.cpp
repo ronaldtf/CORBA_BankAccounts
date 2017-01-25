@@ -6,8 +6,11 @@
  */
 
 #include "DateDelegate.h"
+
+#include "../utils/Utils.h"
+
 #include <chrono>
-#include <time.h>
+#include <ctime>
 
 namespace account {
 
@@ -15,7 +18,9 @@ DateDelegate::DateDelegate(bool publish) {
 	_instance = std::unique_ptr<DateImpl>(new DateImpl);
 	if (publish) {
 		std::string time;
-	  connection::Connection::getInstance()->bindObjectToName(_instance->_this(), "myContext", std::string("Date") + std::string(_instance->toString()) + "_" + time, "Date");
+		std::chrono::system_clock::time_point timepoint = std::chrono::system_clock::now();
+		time_t t = std::chrono::system_clock::to_time_t(timepoint);
+		connection::Connection::getInstance()->bindObjectToName(_instance->_this(), "myContext", std::string("Date") + std::string(_instance->toString()) + "_" + utils::Utils::convertDate(t), "Date");
 	}
 
 }

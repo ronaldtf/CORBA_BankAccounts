@@ -5,12 +5,13 @@
  * \version 1.0
  */
 
-#include <iostream>
 #include "../../idl/Account.hh"
 #include "../connection/Connection.h"
 #include "../account/AccountDelegate.h"
 #include "../account/AccountListDelegate.h"
+
 #include <cassert>
+#include <iostream>
 
 /*
  * In this method I implement an example of how to handle accounts from the client side.

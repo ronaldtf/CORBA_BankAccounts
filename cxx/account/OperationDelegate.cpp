@@ -6,6 +6,7 @@
  */
 
 #include "OperationDelegate.h"
+
 #include <string>
 
 namespace account {
