@@ -9,3 +9,4 @@ idl/AccountSK.cc
 idl/corbaAccount
 cxx/server/Server
 cxx/client/Client
+doc/

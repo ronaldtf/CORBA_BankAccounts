@@ -137,4 +137,10 @@ public class Connection {
 	public void runServer() {
 		orb.run();
 	}
+	
+	public void close() {
+		if (orb != null) {
+			orb.destroy();
+		}
+	}
 }

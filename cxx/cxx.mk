@@ -14,5 +14,7 @@ build:
 	g++ $(FLAGS) -o account/AccountListDelegate.o -c account/AccountListDelegate.cpp
 	g++ $(FLAGS_ALL) -o server/Server ../idl/AccountSK.o connection/Connection.o account/AccountListDelegate.o account/AccountListImpl.o account/AccountDelegate.o account/AccountImpl.o account/DateDelegate.o account/DateImpl.o account/OperationDelegate.o account/OperationImpl.o utils/Utils.o server/Server.cpp
 	g++ $(FLAGS_ALL) -o client/Client ../idl/AccountSK.o connection/Connection.o account/AccountListDelegate.o account/AccountListImpl.o account/AccountDelegate.o account/AccountImpl.o account/DateDelegate.o account/DateImpl.o account/OperationDelegate.o account/OperationImpl.o utils/Utils.o client/Client.cpp
+doxygen:
+	doxygen conf/doxygen.conf
 clean:
 	rm utils/*.o connection/*.o account/*.o client/Client server/Server

@@ -1,22 +1,26 @@
-module corbaAccount {	
+module corbaAccount {
+	// Date
 	interface date {
 		attribute long day;
 		attribute long month;
 		attribute long year;
-		
 		string toString();
 	};
 	
+	// Types of account operations
 	enum operationType {ADD, WITHDRAW};
 	
+	// Account operations
 	interface Operation {
 		attribute long operationId;
 		attribute operationType type;
 		attribute float amount;
 	};
 
+	// List of account operations
 	typedef sequence<Operation> accountOperationsType;
 
+	// Account entity
 	interface Account {
 		attribute long accountId;
 		attribute string name;
@@ -30,7 +34,10 @@ module corbaAccount {
 		string toString();
 	};
 	
+	// List of accounts
 	typedef sequence<Account> accountListType;
+
+	// List of accounts entity
 	interface AccountList {
 		attribute accountListType accountsList;
 		void addAccount(in Account ac);
