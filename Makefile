@@ -12,6 +12,14 @@ java:
 doc:
 	cd java && make -f java.mk javadoc
 	cd cxx && make -f cxx.mk doxygen
+run_java_server:
+	cd java && make -f java.mk server
+run_java_client:
+	cd java && make -f java.mk client
+run_cxx_server:
+	cd cxx && ./server/Server
+run_cxx_client:
+	cd cxx && ./client/Client
 clean:
 	cd idl && make -f idl.mk clean
 	cd cxx && make -f cxx.mk clean
