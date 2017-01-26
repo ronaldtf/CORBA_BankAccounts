@@ -6,7 +6,9 @@
 
 #include "AccountImpl.h"
 
+#include <exception>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -82,9 +84,13 @@ corbaAccount::date_ptr AccountImpl::dateAccountCreated() {
 }
 
 void AccountImpl::dateAccountCreated(::corbaAccount::date_ptr _v) {
-	_dateAccountCreated = new DateDelegate(_v->year(), _v->month(), _v->day());
+	if (CORBA::is_nil(_v))
+		_dateAccountCreated = new DateDelegate(_v->year(), _v->month(), _v->day());
+	else {
+		std::cerr << "Cannot set a NULL date to the account" << std::endl;
+		throw std::exception();
+	}
 }
-
 
 ::CORBA::Float AccountImpl::balance() {
 	return _balance;
@@ -114,6 +120,12 @@ char* AccountImpl::details() {
 };
 
 void AccountImpl::addOperation(::corbaAccount::Operation_ptr op) {
+
+	if (CORBA::is_nil(op)) {
+		std::cerr << "Cannot add a NULL operation" << std::endl;
+		throw std::exception();
+	}
+
 	size_t pos = _accountOperations.length();
 	_accountOperations.length(pos + 1);
 	_accountOperations[pos] = op;

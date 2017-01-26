@@ -6,6 +6,8 @@
 
 #include "DateImpl.h"
 
+#include <exception>
+#include <iostream>
 #include <iomanip>
 #include <sstream>
 
@@ -18,6 +20,11 @@ DateImpl::~DateImpl() {
 }
 
 DateImpl::DateImpl(::corbaAccount::date_ptr d) {
+	str = "";
+	if (CORBA::is_nil(d)) {
+		std::cerr << "Cannot set a NULL date" << std::endl;
+		throw std::exception();
+	}
 	DateImpl(d->year(), d->month(), d->day());
 }
 
