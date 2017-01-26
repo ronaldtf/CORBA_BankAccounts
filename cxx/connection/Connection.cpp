@@ -1,15 +1,7 @@
 /**
- * \file Connection.cpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
- */
-
-/**
- * \file Connection.hpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file Connection.cpp
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #include "../utils/Utils.h"
@@ -38,6 +30,7 @@ void Connection::close() {
 
 
 void Connection::init() {
+	// Get the properties
 	std::map<std::string, std::string> properties = std::map<std::string, std::string>();
 	utils::Utils::parseFile(CONF_NAME, properties);
 
@@ -54,11 +47,14 @@ void Connection::init() {
 	std::cout << "ARGS: " << args[0] << " " << args[1] << std::endl;
 	std::cout << "*************************************************" << std::endl;
 
+	// Initialize the ORB
 	int argc=2;
 	orb = CORBA::ORB_init(argc, args);
 
+	// Obtain the root context of the name service
 	referenceObject();
 
+	// Initialize and activate the POA Manager
 	PortableServer::POAManager_var pman = poa->the_POAManager();
 	pman->activate();
 
@@ -66,20 +62,23 @@ void Connection::init() {
 
 void Connection::referenceObject() {
 	if (!isReferenced) {
+		// Obtain the root context of the name service
 		poa = PortableServer::POA::_narrow(orb->resolve_initial_references("RootPOA"));
 		isReferenced = true;
 	}
 }
 
 std::shared_ptr<Connection> Connection::getInstance() {
+	// Singleton implementation
 	if (_instance == nullptr)
 		_instance = std::shared_ptr<Connection>(new Connection());
 	return _instance;
 }
 
-CORBA::Object_ptr Connection::getClientObject(std::string componentName, std::string contextName, std::string objectType) {
+CORBA::Object_ptr Connection::getClientObject(std::string contextName, std::string componentName, std::string objectType) {
 	CosNaming::NamingContext_var rootContext;
 
+	// Get the root context
 	try {
 		CORBA::Object_var obj;
 		obj = orb->resolve_initial_references("NameService");
@@ -94,6 +93,7 @@ CORBA::Object_ptr Connection::getClientObject(std::string componentName, std::st
 		return CORBA::Object::_nil();
 	}
 
+	// Get the object given the rootContext, the context name and the componentName (object reference name) and type of object
 	CosNaming::Name name;
 	name.length(2);
 	name[0].id = componentName.c_str();
@@ -101,6 +101,7 @@ CORBA::Object_ptr Connection::getClientObject(std::string componentName, std::st
 	name[1].id = objectType.c_str();
 	name[1].kind = "Object";
 
+	// Return the reference in case it was found or show an otherwise
 	try {
 		return rootContext->resolve(name);
 	} catch (CosNaming::NamingContext::NotFound& e) {
@@ -111,12 +112,15 @@ CORBA::Object_ptr Connection::getClientObject(std::string componentName, std::st
 		std::cerr << "A system exception has occurred" << std::endl;
 	}
 
+	// Return a null reference in case it is not found
 	return CORBA::Object::_nil();
 }
 
-void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componentName, std::string contextName, std::string objectType) {
+void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string contextName, std::string componentName, std::string objectType) {
 	CosNaming::NamingContext_var namingContext;
 	CosNaming::NamingContext_var subContext;
+
+	// Get the root context
 	try {
 		CORBA::Object_var obj = orb->resolve_initial_references("NameService");
 		namingContext = CosNaming::NamingContext::_narrow(obj);
@@ -130,6 +134,7 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 		throw std::exception();
 	}
 
+	// Sets the context and put there the object of objectType providing a componentName
 	try {
 		CosNaming::Name nameComponent;
 		nameComponent.length(1);
@@ -137,6 +142,7 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 		nameComponent[0].kind = contextName.c_str();
 
 		try {
+			// Bind the context
 			subContext = namingContext->bind_new_context(nameComponent);
 		} catch (CosNaming::NamingContext::AlreadyBound& ex) {
 			CORBA::Object_var obj;
@@ -148,12 +154,14 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 			}
 		}
 
+		// Set the object name and type
 		CosNaming::Name objectName;
 		objectName.length(1);
 		objectName[0].id = (const char*) objectType.c_str();
 		objectName[0].kind = (const char*) "Object";
 
 		try {
+			// Link the object with the context and the object name and type
 			subContext->bind(objectName, objref);
 		} catch (CosNaming::NamingContext::AlreadyBound& ex) {
 			subContext->rebind(objectName, objref);
@@ -169,15 +177,18 @@ void Connection::bindObjectToName(CORBA::Object_ptr objref, std::string componen
 }
 
 CORBA::Object_ptr Connection::activateServant(PortableServer::ServantBase* obj) {
+	// Activate the CORBA object
 	poa->activate_object(obj);
 	return poa->servant_to_reference(obj);
 }
 
 void Connection::deactivateServant(PortableServer::ServantBase* obj) {
+	// Deactivate the CORBA object
 	poa->deactivate_object(*poa->servant_to_id(obj));
 }
 
 void Connection::runServer() {
+	// Start a CORBA server to receive incoming requests
 	orb->run();
 }
 };

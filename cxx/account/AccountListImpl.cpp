@@ -1,8 +1,7 @@
 /**
- * \file AccountListImpl.cpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file AccountListImpl.cpp
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #include "AccountListImpl.h"
@@ -17,17 +16,23 @@ AccountListImpl::~AccountListImpl() {
 
 AccountListImpl::AccountListImpl(const ::corbaAccount::accountListType* a) {
 	accountsList(*a);
+
+	// Activate the CORBA object
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 };
 
 AccountListImpl::AccountListImpl() : _accountList() {
+
+	// Activate the CORBA object
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 	_accountList.length(0);
 };
 
 corbaAccount::accountListType* AccountListImpl::accountsList() {
+	// IMPORTANT: We need to create a new pointer because the remote CORBA instance
+	// might be removed when we want to access to it from the outside.
 	return new corbaAccount::accountListType(_accountList);
 };
 

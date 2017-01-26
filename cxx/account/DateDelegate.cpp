@@ -1,8 +1,7 @@
 /**
- * \file DateDelegate.cpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file DateDelegate.cpp
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #include "DateDelegate.h"
@@ -18,11 +17,12 @@ DateDelegate::DateDelegate(bool publish) {
 	_instance = std::unique_ptr<DateImpl>(new DateImpl);
 	if (publish) {
 		std::string time;
+		// Get the current time
 		std::chrono::system_clock::time_point timepoint = std::chrono::system_clock::now();
 		time_t t = std::chrono::system_clock::to_time_t(timepoint);
+		// Appends the current time to the reference name in CORBA the naming service
 		connection::Connection::getInstance()->bindObjectToName(_instance->_this(), "myContext", std::string("Date") + std::string(_instance->toString()) + "_" + utils::Utils::convertDate(t), "Date");
 	}
-
 }
 
 DateDelegate::DateDelegate(const DateDelegate& dd) {

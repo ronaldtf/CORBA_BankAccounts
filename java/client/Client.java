@@ -1,3 +1,8 @@
+/**
+ * @file AccountDelegate.java
+ * @author Ronald T. Fernandez
+ * @version 1.0
+ */
 package client;
 
 import org.omg.CORBA.Object;
@@ -8,8 +13,8 @@ import corbaAccount.AccountListHelper;
 import account.AccountDelegate;
 import account.AccountListDelegate;
 import account.OperationDelegate;
-import account.OperationDelegate.OperationType;
 import connection.Connection;
+import utils.Utils;
 
 /*
  * In this class I implement an example of how to handle accounts from the client side.
@@ -38,8 +43,8 @@ public class Client {
 			System.out.println("Number of operations (before): " + ad1.getOperations().size());
 			
 			// Perform an operation on each account
-			OperationDelegate op1 = new OperationDelegate(1000, OperationType.ADD, 1);
-			OperationDelegate op2 = new OperationDelegate(250, OperationType.WITHDRAW, 2);
+			OperationDelegate op1 = new OperationDelegate(1000, Utils.OperationType.ADD, 1);
+			OperationDelegate op2 = new OperationDelegate(250, Utils.OperationType.WITHDRAW, 2);
 			ad1.addOperation(op1);
 			ad1.addOperation(op2);
 			

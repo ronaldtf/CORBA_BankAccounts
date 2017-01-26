@@ -1,3 +1,8 @@
+/**
+ * @file AccountDelegate.java
+ * @author Ronald T. Fernandez
+ * @version 1.0
+ */
 package account;
 
 import java.util.Calendar;
@@ -19,6 +24,8 @@ public class DateImpl extends datePOA {
 		day(d.day());
 		month(d.month());
 		year(d.year());
+		
+		// Activate the CORBA object
 		_connection = Connection.getInstance();
 		_connection.activateServant(this);
 	}
@@ -28,6 +35,8 @@ public class DateImpl extends datePOA {
 		day(day);
 		month(month);
 		year(year);
+		
+		// Activate the CORBA object
 		_connection = Connection.getInstance();
 		_connection.activateServant(this);
 	}

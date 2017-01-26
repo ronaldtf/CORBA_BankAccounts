@@ -1,3 +1,8 @@
+/**
+ * @file AccountDelegate.java
+ * @author Ronald T. Fernandez
+ * @version 1.0
+ */
 package server;
 
 import account.AccountListDelegate;

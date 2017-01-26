@@ -1,8 +1,7 @@
 /**
- * \file AccountListDelegate.cpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file AccountListDelegate.cpp
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #include "../../idl/Account.hh"
@@ -18,6 +17,11 @@ AccountListDelegate::AccountListDelegate(bool publish) {
 	_instance = std::unique_ptr<AccountListImpl>(new AccountListImpl);
 	if (publish) {
 		try {
+			// Publish the object in the CORBA naming service.
+			// IMPORTANT: 	As the object name is fix, there will be only one account list (only bank entity would exist).
+			//				In case of multiple AccountsLists (multiple entities), we would need to add something that
+			//				differentiates one object to the others (for instance, add an accountListId or bankAccountName
+			//				to the CORBA object name when publishing it in the naming service).
 			connection::Connection::getInstance()->bindObjectToName(_instance->_this(), "myContext", "AccountList", "AccountList");
 		} catch (std::exception& e) {
 			std::cerr << "Trying to bind an AccountList which is already bound" << std::endl;
@@ -48,6 +52,8 @@ void AccountListDelegate::addAccount(AccountDelegate& account) {
 
 std::vector<corbaAccount::Account_ptr> AccountListDelegate::getAccounts() const {
 	std::vector<corbaAccount::Account_ptr> v;
+	// We need to do the conversion between the corbaAccount::accountListType CORBA
+	// object and the vector returned here
 	corbaAccount::accountListType* ac = _instance->accountsList();
 	for (size_t pos=0; pos<ac->length(); ++pos)
 		v.push_back((*ac)[pos]);

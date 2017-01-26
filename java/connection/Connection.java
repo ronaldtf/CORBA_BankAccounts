@@ -1,3 +1,8 @@
+/**
+ * @file AccountDelegate.java
+ * @author Ronald T. Fernandez
+ * @version 1.0
+ */
 package connection;
 
 import java.nio.channels.AlreadyBoundException;
@@ -25,25 +30,63 @@ import utils.Utils;
 
 public class Connection {
 
+	/**
+	 * ORB reference
+	 */
 	private ORB orb = null;
+	
+	/**
+	 * Connection configuration file name
+	 */
 	private static final String CONF_NAME = "conf/server.cfg";
+	
+	/**
+	 * Indicates whether the reference of the root context of the name service has been obtained
+	 */
 	private static boolean isReferenced = false;
+	
+	/**
+	 * Connection configuration properties
+	 */
 	private Properties properties;
+	
+	/**
+	 * POA reference
+	 */
 	private POA poa;
+	
+	/**
+	 * Instance needed to implement the singleton pattern
+	 */
 	private static Connection _instance = null;
 	
+	/**
+	 * Get an instance of the class - Singleton pattern
+	 * @return A reference to the connection
+	 * @throws Exception Throws an exception in case of any problem
+	 */
 	public static Connection getInstance() throws Exception {
+		// Singleton implementation
 		if (_instance == null) {
 			_instance = new Connection();
 		}
 		return _instance;
 	}
 	
+	/**
+	 * Class constructor
+	 * @throws Exception Throws an exception in case of any problem
+	 */
 	private Connection() throws Exception {
 		init();
 	}
 	
+	/**
+	 * Initialize the attributes of the instance
+	 * @throws Exception Throws an exception in case of any problem
+	 */
 	private void init() throws Exception {
+		// Get the properties
 		properties = Utils.readProperties(CONF_NAME);
 		String args[] = { "-ORBInitRef", "NameService=corbaname::" + 
 				properties.getProperty("org.omg.CORBA.ORBInitialHost") + ":" + 
@@ -55,39 +98,70 @@ public class Connection {
 		System.out.println("*************************************************");
 		System.out.println("ARGS: " + args[0] + " " + args[1]);
 		System.out.println("*************************************************");
+		
+		// Intialize the ORB
 		orb = ORB.init(args, properties);
 		
+		// Obtain the root context of the name service
 		referenceObject();
 		
+		// Initialize and activate the POA Manager
 		POAManager pman = poa.the_POAManager();
 		pman.activate();
 	}
 	
+	/**
+	 * Obtain the reference of the root context of the name service
+	 * @throws InvalidName	Throws this exception in case the name is not valid
+	 */
 	private void referenceObject() throws InvalidName {
 		if (!isReferenced) {
+			// Obtain the root context of the name service
 			poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 			isReferenced = true;
 		}
 	}
 	
-	public Object getClientObject(String componentName, String contextName, String objectType) throws Exception {
-	      Object objRef = orb.resolve_initial_references("NameService");
-	      NamingContext namingContext = NamingContextHelper.narrow(objRef);
-	      NameComponent name[] = new NameComponent[] {
-	    		  new NameComponent(componentName, contextName),
-	    		  new NameComponent(objectType, "Object")
-	      };
-
-	      Object object = namingContext.resolve(name);
-	      if (object == null) {
-	    	  throw new Exception("Reference is null");
-	      }
-	      return object;
+	/**
+	 * Resolve the CORBA naming service and get the referenced object
+	 * @param contextName	Name of the context
+	 * @param componentName	Name of the component
+	 * @param objectType	Type of object
+	 * @return Referenced object (published in the CORBA naming service)
+	 * @throws Exception Throw an exception in case a generic problem occurs
+	 */
+	public Object getClientObject(String contextName, String componentName, String objectType) throws Exception {
+		// Get the root context
+	    Object objRef = orb.resolve_initial_references("NameService");
+	    NamingContext namingContext = NamingContextHelper.narrow(objRef);
+	    
+	    // Get the object given the rootContext, the context name and the componentName (object reference name) and type of object
+	    NameComponent name[] = new NameComponent[] {
+	      new NameComponent(componentName, contextName),
+	      new NameComponent(objectType, "Object")
+	    };
+	    
+	    // Return the reference in case it was found or throw an exception otherwise
+	    Object object = namingContext.resolve(name);
+	    if (object == null) {
+	      throw new Exception("Reference is null");
+	    }
+	    return object;
 	}
 	
-	public void bindObjectToName(Object objRef, String componentName, String contextName, String objectType) throws Exception {
+	/**
+	 * Publish the object in the CORBA naming service
+	 * @param objRef		Referenced object (published in the CORBA naming service)
+	 * @param contextName	Name of the context
+	 * @param componentName	Name of the component
+	 * @param objectType	Type of object
+	 * @throws Exception Throw an exception in case a generic problem occurs
+	 */
+	public void bindObjectToName(Object objRef, String contextName, String componentName, String objectType) throws Exception {
 		NamingContext namingContext;
 		NamingContext subContext;
+		
+		// Get the root context
 		try {
 			Object object = orb.resolve_initial_references("NameService");
 			namingContext = NamingContextHelper.narrow(object);
@@ -97,11 +171,13 @@ public class Connection {
 			throw new Exception("Name service does not exist");
 		}
 		
+		// Sets the context and put there the object of objectType providing a componentName
 		try {
 			NameComponent nameComponent[] = new NameComponent[] {
 					new NameComponent(componentName, contextName)
 			};
 			try {
+				// Bind the context
 				subContext = namingContext.bind_new_context(nameComponent);
 			} catch (NotFound nf) {
 				throw new Exception("Cannot bind new context");
@@ -111,10 +187,13 @@ public class Connection {
 				if ((subContext = NamingContextHelper.narrow(object)) == null)
 					throw new Exception("Cannot rebind the naming context");
 			}
+			
+			// Set the object name and type
 			NameComponent objectName[] = new NameComponent[] {
 					new NameComponent(objectType, "Object")
 			};
 			try {
+				// Link the object with the context and the object name and type
 				subContext.bind(objectName, objRef);
 			} catch (AlreadyBound ab) {
 				// throw new Exception("Object already bound to the subcontext");
@@ -128,16 +207,28 @@ public class Connection {
 		System.out.println("Object of type " + objectType + " bound in componentName " + componentName + " and context " + contextName);
 	}	
 	
-	
-	public Object activateServant(Servant obj) throws ServantAlreadyActive, WrongPolicy, ServantNotActive {
+	/**
+	 * Activate CORBA object
+	 * @param obj	CORBA object to activate
+	 * @return	Activated object
+	 * @throws Exception Throw an exception in case a generic problem occurs
+	 */
+	public Object activateServant(Servant obj) throws Exception {
+		// Activate the CORBA object
 		poa.activate_object(obj);
 		return poa.servant_to_reference(obj);
 	}
 	
+	/**
+	 * Starts a server to receive incoming CORBA requests
+	 */
 	public void runServer() {
 		orb.run();
 	}
 	
+	/**
+	 * Close the connection
+	 */
 	public void close() {
 		if (orb != null) {
 			orb.destroy();

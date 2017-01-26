@@ -1,8 +1,7 @@
 /**
- * \file AccountImpl.cpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file AccountImpl.cpp
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #include "AccountImpl.h"
@@ -22,6 +21,8 @@ AccountImpl::~AccountImpl() {
 AccountImpl::AccountImpl(corbaAccount::Account_ptr a) : _accountId(a->accountId()), _name(a->name()), _surname(a->surname()), _balance(a->balance()) {
 	dateAccountCreated(a->dateAccountCreated());
 	accountOperations(*a->accountOperations());
+
+	// Activate the CORBA object
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 }
@@ -31,6 +32,7 @@ AccountImpl::AccountImpl(std::string name, std::string surname, corbaAccount::da
 	dateAccountCreated(dateAccCreated);
 	accountOperations(accOperations);
 
+	// Activate the CORBA object
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 }
@@ -39,13 +41,16 @@ AccountImpl::AccountImpl(std::string name, std::string surname, corbaAccount::da
 AccountImpl::AccountImpl(std::string name, std::string surname, float balance, unsigned int accountId) : _accountId(accountId), _name(name), _surname(surname),
 		_balance(balance), _accountOperations(){
 
+	// Activate the CORBA object
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 
+	// Initialize the account creation date
 	_dateAccountCreated = new DateDelegate();
 }
 
 AccountImpl::AccountImpl(std::string name, std::string surname, unsigned int accountId) : _accountId(accountId), _name(name), _surname(surname), _balance(0.0f) {
+	// Initializes the connection (for future references)
 	_connection = connection::Connection::getInstance();
 }
 
@@ -95,6 +100,7 @@ corbaAccount::accountOperationsType* AccountImpl::accountOperations() {
 
 void AccountImpl::accountOperations(const ::corbaAccount::accountOperationsType& _v) {
 	_accountOperations = _v;
+	// Update the account balance
 	for (size_t pos=0; pos < _accountOperations.length(); ++pos) {
 		if (_accountOperations[pos]->type() == corbaAccount::operationType::WITHDRAW)
 			_balance -= _accountOperations[pos]->amount();
@@ -111,6 +117,7 @@ void AccountImpl::addOperation(::corbaAccount::Operation_ptr op) {
 	size_t pos = _accountOperations.length();
 	_accountOperations.length(pos + 1);
 	_accountOperations[pos] = op;
+	// Update the account balance
 	if (op->type() == corbaAccount::operationType::WITHDRAW)
 		_balance -= op->amount();
 	else

@@ -1,8 +1,7 @@
 /**
- * \file OperationImpl.cpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file OperationImpl.cpp
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #include "OperationImpl.h"
@@ -16,11 +15,13 @@ OperationImpl::~OperationImpl() {
 }
 
 OperationImpl::OperationImpl(corbaAccount::Operation_ptr op) : _type(op->type()), _amount(op->amount()), _operationId(op->operationId()) {
+	// Activate the CORBA object
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 }
 
 OperationImpl::OperationImpl(corbaAccount::operationType type, const float amount, const int operationId) : _type(type), _amount(amount), _operationId(operationId) {
+	// Activate the CORBA object
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 }

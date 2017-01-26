@@ -1,8 +1,7 @@
 /**
- * \file DateImpl.cpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file DateImpl.cpp
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #include "DateImpl.h"
@@ -26,6 +25,8 @@ DateImpl::DateImpl(int year, int month, int day) : _year(year), _month(month), _
 	std::ostringstream os;
 	os << std::setw(2) << std::setfill('0') << this->_year << "/" << this->_month << "/" << this->_day;
 	str = os.str();
+
+	// Activate the CORBA object
 	_connection = connection::Connection::getInstance();
 	_connection->activateServant(this);
 }

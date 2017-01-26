@@ -1,8 +1,7 @@
 /**
- * \file DateImpl.h
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file DateImpl.h
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #ifndef DATEIMPL_H_

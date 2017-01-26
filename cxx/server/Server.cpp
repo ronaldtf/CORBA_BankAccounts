@@ -1,8 +1,7 @@
 /**
- * \file Server.cpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file Server.cpp
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #include "../account/AccountListDelegate.h"

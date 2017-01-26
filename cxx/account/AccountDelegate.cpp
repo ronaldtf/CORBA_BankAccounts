@@ -1,8 +1,7 @@
 /**
- * \file AccountDelegate.cpp
- * \author Ronald T. Fernandez
- * \mail ronaldtfernandez@gmail.com
- * \version 1.0
+ * @file AccountDelegate.cpp
+ * @author Ronald T. Fernandez
+ * @version 1.0
  */
 
 #include "../connection/Connection.h"
@@ -13,8 +12,10 @@ namespace account {
 
 AccountDelegate::AccountDelegate(std::string name, std::string surname, int accountId, bool publish) {
 	_instance = std::unique_ptr<AccountImpl>(new AccountImpl(name, surname, accountId));
-	if (publish)
+	if (publish) {
+		// Appends the accountId to the reference name in CORBA the naming service (accountId is assumed to be unique)
 		connection::Connection::getInstance()->bindObjectToName(_instance->_this(), "myContext", "Account" + std::to_string(_instance->accountId()), "Account");
+	}
 }
 
 AccountDelegate::AccountDelegate(std::string name, std::string surname, float balance, int accountId) {
@@ -48,6 +49,8 @@ DateDelegate AccountDelegate::getDate() const {
 }
 std::vector<OperationDelegate> AccountDelegate::getOperations() const {
 	std::vector<OperationDelegate> operations;
+	// Convert the operations list in the CORBA format
+	// to the returned vector type
 	corbaAccount::accountOperationsType* ops = _instance->accountOperations();
 	size_t len = ops->length();
 	for (size_t pos=0; pos<len; ++pos) {
