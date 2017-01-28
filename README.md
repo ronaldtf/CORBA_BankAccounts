@@ -1,4 +1,4 @@
-# CorbaExchange
+# CORBA_BankAccounts
 This is an example of how to implement Corba interfaces in Java an C++.
 
 The project consists of a Client and a Server which are handling bank accounts:
