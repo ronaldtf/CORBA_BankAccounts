@@ -22,15 +22,32 @@ Simply run the Makefile. It compiles the idl library for both java and C++, as w
 ## Java
 To run the java version, run the following commands (in the java folder):
 
-1. *tnameserv -ORBInitialPort 9999*
-2. Server: *make run_java_server*
-3. Client: *make run_java_client*
+1. Start the naming service:
+````bash
+tnameserv -ORBInitialPort 9999
+````
+2. Run the server: 
+````bash
+make run_java_server
+````
+3. Run the client: 
+````bash
+make run_java_client````
 
 ## C++
 
-1. *tnameserv -ORBInitialPort 9999*
-2. Server: *make run_cxx_server*
-3. Client: *make run_cxx_client*
+1. Start the naming service:
+````bash
+tnameserv -ORBInitialPort 9999
+````
+2. Run the server: 
+````bash
+make run_cxx_server
+````
+3. Run the client: 
+````bash
+make run_cxx_client
+````
 
 # Generate the javadoc/doxygen
 
