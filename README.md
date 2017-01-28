@@ -32,7 +32,8 @@ make run_java_server
 ````
 3. Run the client: 
 ````bash
-make run_java_client````
+make run_java_client
+````
 
 ## C++
 
