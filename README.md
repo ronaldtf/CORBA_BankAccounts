@@ -36,5 +36,5 @@ To run the java version, run the following commands (in the java folder):
 
 To generate the documentation, run:
  ````bash
- make doc*
+ make doc
  ````
