@@ -2,9 +2,9 @@
 This is an example of how to implement Corba interfaces in Java an C++.
 
 The project consists of a Client and a Server which are handling bank accounts:
-* Server: A server represents a bank entity. In this case, the server creates a list of accounts and listen for clients
+	* Server: A server represents a bank entity. In this case, the server creates a list of accounts and listen for clients
           who create and update their accounts
-* Client: A client represents the people who attend to the bank in order to create an account and perform operations.
+	* Client: A client represents the people who attend to the bank in order to create an account and perform operations.
 
 Unlike other CORBA projects seen in Internet, the purpose of this project is to test the usage and manipulation of CORBA objects from both sides, i.e. the Client and the Server. This way, the Server creates and publishes the list of accounts but it is the Client who requests new account creation and manipulation. In fact, both entities publish their instances in the CORBA naming service so that anyone may have access to them.
 
