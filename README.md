@@ -26,10 +26,12 @@ To run the java version, run the following commands (in the java folder):
 ````bash
 tnameserv -ORBInitialPort 9999
 ````
+
 2. Run the server: 
 ````bash
 make run_java_server
 ````
+
 3. Run the client: 
 ````bash
 make run_java_client
@@ -41,10 +43,12 @@ make run_java_client
 ````bash
 tnameserv -ORBInitialPort 9999
 ````
+
 2. Run the server: 
 ````bash
 make run_cxx_server
 ````
+
 3. Run the client: 
 ````bash
 make run_cxx_client
