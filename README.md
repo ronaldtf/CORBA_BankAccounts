@@ -20,9 +20,9 @@ The project can be improved in different ways:
 # Building the project
 Libraries needed:
 
-- omniORB: libraries for Corba in C++, e.g. <http://omniorb.sourceforge.net/>
+- omniORB: libraries for Corba in C++ (<http://omniorb.sourceforge.net/>)
 
-- jacORB: libraries for Corba in Java, e.g. <http://www.jacorb.org/>
+- jacORB: libraries for Corba in Java (<http://www.jacorb.org/>)
 
 Simply run the Makefile. It compiles the idl library for both java and C++, as well as the source code for both languages.
 
