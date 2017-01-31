@@ -74,6 +74,6 @@ make run_cxx_client
 
 To generate the documentation, run:
 
- ````bash
+````bash
  make doc
- ````
+````
