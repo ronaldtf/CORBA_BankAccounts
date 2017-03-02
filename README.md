@@ -72,7 +72,7 @@ make run_cxx_server
 make run_cxx_client
 ````
 
-# Generate the javadoc/doxygen
+## Generate the javadoc/doxygen
 
 To generate the documentation, run:
 
