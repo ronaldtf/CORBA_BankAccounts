@@ -17,7 +17,7 @@ The project can be improved in different ways:
 
 * ... 
 
-# Building the project
+## Building the project
 Libraries needed:
 
 - omniORB: libraries for Corba in C++ (<http://omniorb.sourceforge.net/>)
@@ -26,9 +26,11 @@ Libraries needed:
 
 Simply run the Makefile. It compiles the idl library for both java and C++, as well as the source code for both languages.
 
-# Run the application
+## Run the application
 
-## Java
+As an important remark, CORBA objects can be used regardless of the language (assuming we have the CORBA libraries for the language used, as occurs with this project). This means that we can run the _client_ implemented, for instance, in _Java_ and the _server_ implemented in _C++_ (any other combination is possible).
+
+### Java
 
 To run the java version, run the following commands (in the java folder):
 
@@ -50,7 +52,7 @@ make run_java_server
 make run_java_client
 ````
 
-## C++
+### C++
 
 1.- Start the naming service:
 
